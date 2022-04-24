@@ -1,5 +1,4 @@
-import { createGlobalStyle } from 'styled-components';
-import outfitLigth from '../public/fonts/Outfit-Light.ttf';
+import styled, { createGlobalStyle } from 'styled-components';
 
 const customMediaQuery = (maxWidth: number) =>
   `@media (max-width: ${maxWidth}px)`;
@@ -61,8 +60,7 @@ body {
   font-family: 'Outfit-Medium';
   font-size: var(--font-size-body-m);
   padding: 3.2rem;
-  display: flex;
-  gap: 3.6rem;
+  min-height: 100Vh;
   
   ${media.phone} {
     padding: 0 2.4rem;
@@ -79,13 +77,15 @@ p {
   font-size: var(--font-size-body-m);
 }
 
-main {
+
+
+
+`;
+
+export const MainWrapper = styled.div`
+  display: flex;
   max-width: 144rem;
   width: 100%;
   margin: 0 auto;
-  height: fit-content;
-  background-color: transparent;
-}
-
-
+  height: calc(100vh - 6.4rem);
 `;

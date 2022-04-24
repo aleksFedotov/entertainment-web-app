@@ -15,6 +15,7 @@
     "jsx": "preserve",
     "incremental": true
   },
+  "types": ["node", "jest", "@testing-library/jest-dom"],
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "@types/custom.d.ts"],
   "exclude": ["node_modules"]
 }
