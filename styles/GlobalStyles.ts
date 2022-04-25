@@ -62,6 +62,7 @@ body {
   padding: 3.2rem;
   min-height: 100Vh;
   
+  
   ${media.phone} {
     padding: 0 2.4rem;
   }
@@ -77,15 +78,24 @@ p {
   font-size: var(--font-size-body-m);
 }
 
-
-
+.swiper_slide {
+  /* width:fit-content; */
+}
 
 `;
 
-export const MainWrapper = styled.div`
+export const PageWrapper = styled.div`
   display: flex;
   max-width: 144rem;
   width: 100%;
   margin: 0 auto;
   height: calc(100vh - 6.4rem);
+  gap: 3.6rem;
+`;
+
+export const ContentWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  max-width: 100%;
+  width: 100%;
 `;

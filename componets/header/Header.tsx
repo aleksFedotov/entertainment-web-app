@@ -21,13 +21,17 @@ const Header: React.FC = () => {
       <Navigation>
         <Link href={'/'} passHref>
           <a>
-            <HomeIcon className={router.pathname === '/' ? 'active' : ''} />
+            <HomeIcon
+              className={router.pathname === '/' ? 'active' : ''}
+              aria-label="home_icon"
+            />
           </a>
         </Link>
         <Link href={'/movies'} passHref>
           <a>
             <MovieIcon
               className={router.pathname === '/movies' ? 'active' : ''}
+              aria-label="movies_icon"
             />
           </a>
         </Link>
@@ -35,6 +39,7 @@ const Header: React.FC = () => {
           <a>
             <SeriesIcon
               className={router.pathname === '/series' ? 'active' : ''}
+              aria-label="series_icon"
             />
           </a>
         </Link>
@@ -42,6 +47,7 @@ const Header: React.FC = () => {
           <a>
             <BookMarkIcon
               className={router.pathname === '/bookmarked' ? 'active' : ''}
+              aria-label="bookmared_icon"
             />
           </a>
         </Link>

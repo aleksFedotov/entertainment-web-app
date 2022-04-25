@@ -7,13 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --watch"
+    "test": "jest "
   },
   "dependencies": {
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "swiper": "^8.1.4"
   },
   "devDependencies": {
     "@svgr/webpack": "^6.2.1",
@@ -35,13 +36,9 @@
     "typescript": "^4.6.3"
   },
   "jest": {
-    "setupFilesAfterEnv": [
-      "<rootDir>/jest.setup.js"
-    ],
     "testEnvironment": "jsdom",
     "moduleNameMapper": {
-      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/assetsTransformer.js",
-      "\\.(css|less)$": "<rootDir>/assetsTransformer.js"
+      "\\.svg": "<rootDir>/__mocks__/svg.js"
     }
   }
 }
