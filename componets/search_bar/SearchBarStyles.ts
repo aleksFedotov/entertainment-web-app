@@ -11,7 +11,7 @@ export const SearchInput = styled.input`
   width: 100%;
   background-color: transparent;
   border: none;
-  font-family: inherit;
+  font-family: 'Outfit-Light';
   font-size: var(--font-size-heading-m);
   padding-bottom: 2rem;
   color: var(--color-white);

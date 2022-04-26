@@ -11,7 +11,7 @@ export const media = {
 export const GlobalStyles = createGlobalStyle`
   @font-face {
     font-family: 'Outfit-Light';
-    src: url('/fonts/Outfit_Ligth.ttf') format('truetype');
+    src: url('/fonts/Outfit-Light.ttf') format('truetype');
     font-style: normal;
     font-weight: 300;
     font-display: swap;
@@ -61,6 +61,7 @@ body {
   font-size: var(--font-size-body-m);
   padding: 3.2rem;
   min-height: 100Vh;
+  overflow-x: hidden;
   
   
   ${media.phone} {
@@ -79,23 +80,34 @@ p {
 }
 
 .swiper_slide {
-  /* width:fit-content; */
+  width: fit-content !important;
+}
+
+h1,h2{
+  font-family: 'Outfit-Light';
+  font-weight: 300;
+}
+
+h3 {
+  font-weight: 600;
 }
 
 `;
 
 export const PageWrapper = styled.div`
   display: flex;
-  max-width: 144rem;
+
   width: 100%;
   margin: 0 auto;
   height: calc(100vh - 6.4rem);
   gap: 3.6rem;
 `;
 
-export const ContentWrapper = styled.div`
+export const MainWrapper = styled.main`
   display: flex;
   flex-direction: column;
-  max-width: 100%;
+  gap: 4.8rem;
+  margin: 0 auto;
+  max-width: 140rem;
   width: 100%;
 `;

@@ -1,9 +1,5 @@
 import type { AppProps } from 'next/app';
-import {
-  GlobalStyles,
-  PageWrapper,
-  ContentWrapper,
-} from '../styles/GlobalStyles';
+import { GlobalStyles, PageWrapper, MainWrapper } from '../styles/GlobalStyles';
 import Header from '../componets/header/Header';
 import SearchBar from '../componets/search_bar/SearchBar';
 
@@ -13,10 +9,10 @@ function MyApp({ Component, pageProps }: AppProps) {
       <GlobalStyles />
       <PageWrapper>
         <Header />
-        <ContentWrapper>
+        <MainWrapper>
           <SearchBar />
           <Component {...pageProps} />;
-        </ContentWrapper>
+        </MainWrapper>
       </PageWrapper>
     </>
   );

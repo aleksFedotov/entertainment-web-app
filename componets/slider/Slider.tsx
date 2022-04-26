@@ -1,14 +1,17 @@
 import React from 'react';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { IMovie } from '../../../@types/types';
+import { IMovie } from '../../@types/types';
 import 'swiper/css';
 import { FreeMode } from 'swiper';
 
 import SliderCard from './slider_card/SliderCard';
 
+import { SliderWrapper } from './SliderStyles';
+
 const Slider: React.FC<{ data: IMovie[] }> = ({ data }) => {
   return (
-    <section>
+    <SliderWrapper>
+      <h2>Trending</h2>
       <Swiper
         slidesPerView={2.5}
         spaceBetween={40}
@@ -21,7 +24,7 @@ const Slider: React.FC<{ data: IMovie[] }> = ({ data }) => {
           </SwiperSlide>
         ))}
       </Swiper>
-    </section>
+    </SliderWrapper>
   );
 };
 

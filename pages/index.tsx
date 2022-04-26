@@ -5,29 +5,32 @@ import { IMovie } from '../@types/types';
 
 import Data from '../data.json';
 
-import Slider from '../componets/home/slider/Slider';
+import Slider from '../componets/slider/Slider';
+import MoviesGrid from '../componets/movie_grid/MoviesGrid';
 
-const Home: NextPage<{ movies: IMovie[] }> = ({ movies }) => {
-  const trendingMovies = movies.filter((movie) => movie.isTrending);
+const Home: NextPage<{ data: IMovie[] }> = ({ data }) => {
+  const trendingMovies = data.filter((movie) => movie.isTrending);
+  const recomendedMovies = data.filter((movie) => !movie.isTrending);
 
   return (
     <>
       <Head>
         <title>Entertainment web app </title>
-        <meta name="description" content="Entertainment web app" />
+        <meta name="description" content="Entertainment web app | Home" />
         <link rel="icon" href="/favicon-32x32.png" />
       </Head>
       <Slider data={trendingMovies} />
+      <MoviesGrid data={recomendedMovies} header="Recommended for you" />
     </>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const movies = Data;
+  const data = Data;
 
   return {
     props: {
-      movies,
+      data,
     },
   };
 };
