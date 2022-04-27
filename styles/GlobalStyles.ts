@@ -4,7 +4,8 @@ const customMediaQuery = (maxWidth: number) =>
   `@media (max-width: ${maxWidth}px)`;
 
 export const media = {
-  tablet: customMediaQuery(950),
+  desktop_m: customMediaQuery(1200),
+  tablet: customMediaQuery(1000),
   phone: customMediaQuery(767),
 };
 
@@ -61,7 +62,7 @@ body {
   font-size: var(--font-size-body-m);
   padding: 3.2rem;
   min-height: 100Vh;
-  overflow-x: hidden;
+  /* overflow-x: hidden; */
   
   
   ${media.phone} {
@@ -101,6 +102,10 @@ export const PageWrapper = styled.div`
   margin: 0 auto;
   height: calc(100vh - 6.4rem);
   gap: 3.6rem;
+
+  ${media.tablet} {
+    flex-direction: column;
+  }
 `;
 
 export const MainWrapper = styled.main`

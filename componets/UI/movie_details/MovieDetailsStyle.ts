@@ -1,10 +1,11 @@
 import styled from 'styled-components';
+import { motion } from 'framer-motion';
 
 interface DetailsProps {
   type: string;
 }
 
-export const Details = styled.div<DetailsProps>`
+export const Details = styled(motion.div)<DetailsProps>`
   position: ${(props) => (props.type === 'trending' ? 'absolute' : 'static')};
   bottom: 2.4rem;
   left: 2.4rem;

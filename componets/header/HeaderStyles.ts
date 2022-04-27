@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { media } from '../../styles/GlobalStyles';
 
 export const HeaderWrapper = styled.div`
   width: 9.6rem;
@@ -15,6 +16,14 @@ export const HeaderWrapper = styled.div`
 
   img.logo {
     cursor: pointer;
+  }
+
+  ${media.tablet} {
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    padding: 2rem 1.6rem;
   }
 `;
 
@@ -40,6 +49,11 @@ export const Navigation = styled.nav`
       fill: var(--color-red);
     }
   }
+  ${media.tablet} {
+    margin-top: 0;
+    margin-top: 0.3rem;
+    gap: 3.2rem;
+  }
 `;
 
 export const Avatar = styled.div`
@@ -55,5 +69,10 @@ export const Avatar = styled.div`
   img {
     width: 100%;
     height: 100%;
+  }
+
+  ${media.tablet} {
+    width: 3.2rem;
+    height: 3.2rem;
   }
 `;

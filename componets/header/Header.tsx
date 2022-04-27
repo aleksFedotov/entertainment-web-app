@@ -53,7 +53,6 @@ const Header: React.FC = () => {
         </Link>
       </Navigation>
       <Avatar>
-        {/* eslint-disable-next-line */}
         <img src="/assets/user.png" alt="avatar" />
       </Avatar>
     </HeaderWrapper>

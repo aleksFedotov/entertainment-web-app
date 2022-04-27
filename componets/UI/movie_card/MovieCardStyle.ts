@@ -1,4 +1,5 @@
 import styled, { css } from 'styled-components';
+import { motion } from 'framer-motion';
 
 interface ICardProps {
   image: string;
@@ -50,10 +51,12 @@ export const ImgageWrapper = styled.div`
   }
 `;
 
-export const Card = styled.div<ICardProps>`
+export const Card = styled(motion.div)<ICardProps>`
   position: relative;
-  width: ${(props) => props.width}px;
-  height: ${(props) => props.height}px;
+  max-width: ${(props) => props.width}px;
+  width: 100%;
+  height: fit-content;
+  /* height: ${(props) => props.height}px; */
   border-radius: 0.8rem;
   cursor: pointer;
   color: var(--color-white);
@@ -89,13 +92,20 @@ export const BookedMark = styled.div<BookMarkProps>`
     background-color: var(--color-white);
 
     ${(props) =>
-      !props.isBooked &&
-      css`
-        svg {
-          path {
-            stroke: var(--color-dark-blue);
-          }
-        }
-      `}
+      !props.isBooked
+        ? css`
+            svg {
+              path {
+                stroke: var(--color-dark-blue);
+              }
+            }
+          `
+        : css`
+            svg {
+              path {
+                fill: var(--color-dark-blue);
+              }
+            }
+          `}
   }
 `;

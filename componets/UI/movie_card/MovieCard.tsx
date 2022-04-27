@@ -19,7 +19,14 @@ const MovieCard: React.FC<{
   isBooked: boolean;
 }> = ({ image, width, height, movieTitle, children, isBooked }) => {
   return (
-    <Card image={image} width={width} height={height}>
+    <Card
+      image={image}
+      width={width}
+      height={height}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       {children}
       <ImgageWrapper>
         <img src={image} alt="movieTitle" />

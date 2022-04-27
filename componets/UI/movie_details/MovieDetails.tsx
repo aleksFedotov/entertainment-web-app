@@ -11,7 +11,12 @@ const MovieDetails: React.FC<{ data: IMovie; type: string }> = ({
   type,
 }) => {
   return (
-    <Details type={type}>
+    <Details
+      type={type}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 0.5 }}
+    >
       <div>
         <p>{data.year}</p>
         <span></span>
