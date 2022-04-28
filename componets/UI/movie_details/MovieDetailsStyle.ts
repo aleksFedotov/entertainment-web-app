@@ -1,6 +1,8 @@
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 
+import { media } from '../../../styles/GlobalStyles';
+
 interface DetailsProps {
   type: string;
 }
@@ -35,6 +37,13 @@ export const Details = styled(motion.div)<DetailsProps>`
     svg {
       margin-right: 0.7rem;
     }
+
+    ${media.phone} {
+      p {
+        font-size: ${(props) =>
+          props.type === 'trending' ? '1.2rem' : '1.1rem'};
+      }
+    }
   }
 
   h3 {
@@ -42,8 +51,16 @@ export const Details = styled(motion.div)<DetailsProps>`
       props.type === 'trending'
         ? 'var(--font-size-heading-m)'
         : 'var(--font-size-heading-s)'};
-    font-size: var(--font-size-heading-m);
     color: var(--color-white);
     margin-top: 0.3rem;
+  }
+
+  ${media.phone} {
+    bottom: 1.6rem;
+    left: 1.6rem;
+    h3 {
+      font-size: ${(props) =>
+        props.type === 'trending' ? '1.5rem' : '1.4rem'};
+    }
   }
 `;

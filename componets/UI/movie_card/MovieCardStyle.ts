@@ -1,10 +1,11 @@
 import styled, { css } from 'styled-components';
 import { motion } from 'framer-motion';
 
+import { media } from '../../../styles/GlobalStyles';
+
 interface ICardProps {
   image: string;
   width: string;
-  height: string;
 }
 
 type BookMarkProps = {
@@ -39,6 +40,16 @@ export const PlayBtn = styled.button`
   align-items: center;
   justify-content: center;
   gap: 2rem;
+
+  ${media.phone} {
+    width: 6rem;
+    height: 2.4rem;
+    gap: 0.8rem;
+    font-size: 1.1rem;
+    img {
+      width: 1.5rem;
+    }
+  }
 `;
 
 export const ImgageWrapper = styled.div`
@@ -56,7 +67,6 @@ export const Card = styled(motion.div)<ICardProps>`
   max-width: ${(props) => props.width}px;
   width: 100%;
   height: fit-content;
-  /* height: ${(props) => props.height}px; */
   border-radius: 0.8rem;
   cursor: pointer;
   color: var(--color-white);
@@ -107,5 +117,10 @@ export const BookedMark = styled.div<BookMarkProps>`
               }
             }
           `}
+  }
+
+  ${media.phone} {
+    right: 0.8rem;
+    top: 0.8rem;
   }
 `;

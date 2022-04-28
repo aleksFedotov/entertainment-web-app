@@ -20,7 +20,7 @@ const SearchBar: React.FC<{ path: string }> = ({ path }) => {
   if (path === '/movies') {
     placeholder = 'Search for movies';
   } else if (path === '/series') {
-    placeholder = '/Search for TV series';
+    placeholder = 'Search for TV series';
   } else if (path === 'bookmarked') {
     placeholder = 'Search for bookmarked shows';
   }

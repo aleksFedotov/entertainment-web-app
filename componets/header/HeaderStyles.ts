@@ -24,6 +24,18 @@ export const HeaderWrapper = styled.div`
     align-items: center;
     justify-content: space-between;
     padding: 2rem 1.6rem;
+
+    max-height: 5.6rem;
+  }
+
+  ${media.phone} {
+    img.logo {
+      width: 2.5rem;
+      height: 2rem;
+    }
+    width: calc(100% + 3.2rem);
+    margin-left: -1.6rem;
+    border-radius: 0;
   }
 `;
 
@@ -35,6 +47,8 @@ export const Navigation = styled.nav`
   margin-top: 7.5rem;
 
   svg {
+    width: 2rem;
+    height: 2rem;
     cursor: pointer;
 
     &.active {
@@ -54,6 +68,16 @@ export const Navigation = styled.nav`
     margin-top: 0.3rem;
     gap: 3.2rem;
   }
+
+  ${media.phone} {
+    a {
+      height: fit-content;
+    }
+    svg {
+      width: 1.6rem;
+      height: 1.6rem;
+    }
+  }
 `;
 
 export const Avatar = styled.div`
@@ -65,6 +89,7 @@ export const Avatar = styled.div`
   justify-content: center;
   border-radius: 50%;
   margin-top: auto;
+  cursor: pointer;
 
   img {
     width: 100%;
@@ -74,5 +99,11 @@ export const Avatar = styled.div`
   ${media.tablet} {
     width: 3.2rem;
     height: 3.2rem;
+    margin-top: 0;
+  }
+
+  ${media.phone} {
+    width: 2.4rem;
+    height: 2.4rem;
   }
 `;

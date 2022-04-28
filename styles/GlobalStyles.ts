@@ -6,7 +6,7 @@ const customMediaQuery = (maxWidth: number) =>
 export const media = {
   desktop_m: customMediaQuery(1200),
   tablet: customMediaQuery(1000),
-  phone: customMediaQuery(767),
+  phone: customMediaQuery(650),
 };
 
 export const GlobalStyles = createGlobalStyle`
@@ -62,12 +62,13 @@ body {
   font-size: var(--font-size-body-m);
   padding: 3.2rem;
   min-height: 100Vh;
-  /* overflow-x: hidden; */
+
   
   
   ${media.phone} {
-    padding: 0 2.4rem;
+    padding: 0 1.6rem;
   }
+
 
 }
 
@@ -105,13 +106,14 @@ export const PageWrapper = styled.div`
 
   ${media.tablet} {
     flex-direction: column;
+    gap: 0;
   }
 `;
 
 export const MainWrapper = styled.main`
   display: flex;
   flex-direction: column;
-  gap: 4.8rem;
+
   margin: 0 auto;
   max-width: 140rem;
   width: 100%;

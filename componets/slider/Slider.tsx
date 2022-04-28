@@ -3,18 +3,20 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import { IMovie } from '../../@types/types';
 import 'swiper/css';
 import { FreeMode } from 'swiper';
+import useWindowWidth from '../../hooks/useWindowWidth';
 
 import SliderCard from './slider_card/SliderCard';
-
 import { SliderWrapper } from './SliderStyles';
 
 const Slider: React.FC<{ data: IMovie[] }> = ({ data }) => {
+  const windowWidth = useWindowWidth();
+
   return (
     <SliderWrapper>
       <h2>Trending</h2>
       <Swiper
-        slidesPerView={2.5}
-        spaceBetween={40}
+        slidesPerView={windowWidth! > 650 ? 2.5 : 1.5}
+        spaceBetween={windowWidth! > 650 ? 40 : 16}
         freeMode={true}
         modules={[FreeMode]}
       >

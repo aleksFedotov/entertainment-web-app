@@ -13,16 +13,14 @@ import {
 const MovieCard: React.FC<{
   image: string;
   width: string;
-  height: string;
   movieTitle: string;
   children?: React.ReactNode;
   isBooked: boolean;
-}> = ({ image, width, height, movieTitle, children, isBooked }) => {
+}> = ({ image, width, movieTitle, children, isBooked }) => {
   return (
     <Card
       image={image}
       width={width}
-      height={height}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
