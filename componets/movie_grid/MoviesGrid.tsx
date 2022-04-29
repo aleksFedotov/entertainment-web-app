@@ -20,7 +20,7 @@ const MoviesGrid: React.FC<{ data: IMovie[]; header: string }> = ({
   }
 
   let width = '280';
-  if (windowWidth! <= 1200) {
+  if (windowWidth! <= 800) {
     width = '220';
   } else if (windowWidth! < 650) {
     width = '164';

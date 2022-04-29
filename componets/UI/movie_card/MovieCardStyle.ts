@@ -41,7 +41,7 @@ export const PlayBtn = styled.button`
   justify-content: center;
   gap: 2rem;
 
-  ${media.phone} {
+  ${media.tablet_s} {
     width: 6rem;
     height: 2.4rem;
     gap: 0.8rem;

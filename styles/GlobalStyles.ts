@@ -6,6 +6,7 @@ const customMediaQuery = (maxWidth: number) =>
 export const media = {
   desktop_m: customMediaQuery(1200),
   tablet: customMediaQuery(1000),
+  tablet_s: customMediaQuery(800),
   phone: customMediaQuery(650),
 };
 
@@ -115,6 +116,6 @@ export const MainWrapper = styled.main`
   flex-direction: column;
 
   margin: 0 auto;
-  max-width: 140rem;
+  max-width: 129rem;
   width: 100%;
 `;

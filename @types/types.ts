@@ -17,3 +17,8 @@ export interface IMovie {
   isBookmarked: boolean;
   isTrending: boolean;
 }
+
+export interface ISearchData {
+  searchResult: IMovie[] | null;
+  searchQuery: string;
+}
