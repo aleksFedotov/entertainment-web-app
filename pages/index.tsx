@@ -35,14 +35,17 @@ const Home: NextPage<{ data: IMovie[] }> = ({ data }) => {
         category="All"
         getSearchResult={getSearchResult}
       />
-      <Slider data={trendingMovies} />
+
       {searchData.searchResult ? (
         <MoviesGrid
           data={searchData.searchResult}
           header={`Found ${searchData.searchResult.length} results for '${searchData.searchQuery}'`}
         />
       ) : (
-        <MoviesGrid data={recomendedMovies} header="Recommended for you" />
+        <>
+          <Slider data={trendingMovies} />
+          <MoviesGrid data={recomendedMovies} header="Recommended for you" />
+        </>
       )}
     </>
   );

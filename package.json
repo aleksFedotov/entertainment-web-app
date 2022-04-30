@@ -12,6 +12,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^1.8.1",
     "framer-motion": "^6.3.2",
+    "mongodb": "^3.5.9",
+    "moongose": "^1.0.0",
     "next": "12.1.5",
     "react": "18.0.0",
     "react-dom": "18.0.0",

@@ -9,14 +9,12 @@ export const search = (category: string, serchQuery: string): IMovie[] | [] => {
       item.title.toLowerCase().includes(serchQuery.toLowerCase())
     );
   } else if (category !== 'Bookmarked') {
-    console.log('other');
     searchRes = Data.filter(
       (item) =>
         item.category === category &&
         item.title.toLowerCase().includes(serchQuery.toLowerCase())
     );
   } else {
-    console.log('book');
     searchRes = Data.filter(
       (item) =>
         item.isBookmarked === true &&

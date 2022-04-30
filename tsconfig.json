@@ -16,6 +16,12 @@
     "incremental": true
   },
   "types": ["node", "jest", "@testing-library/jest-dom"],
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "@types/custom.d.ts"],
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    "@types/custom.d.ts",
+    "mongoDB.js"
+  ],
   "exclude": ["node_modules"]
 }
