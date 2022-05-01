@@ -3,14 +3,14 @@ import mongoose from 'mongoose';
 const EntertaimentSchema = new mongoose.Schema({
   title: {
     type: String,
-    required: [true, 'Please provide a title'],
   },
   thumbnail: {
     trending: {
+      required: false,
       small: String,
       large: String,
     },
-    reqular: {
+    regular: {
       small: String,
       medium: String,
       large: String,

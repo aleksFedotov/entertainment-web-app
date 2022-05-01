@@ -5,12 +5,24 @@ import { IMovie } from '../@types/types';
 import Data from '../data.json';
 
 interface IInitialState {
-  searchResult: IMovie[] | [];
+  searchResult: ISearchResult;
   searchQuery: string;
 }
 
+interface ISearchResult {
+  all: IMovie[] | null;
+  movie: IMovie[] | null;
+  tv: IMovie[] | null;
+  bookmarked: IMovie[] | null;
+}
+
 const initialState: IInitialState = {
-  searchResult: [],
+  searchResult: {
+    all: null,
+    movie: null,
+    tv: null,
+    bookmarked: null,
+  },
   searchQuery: '',
 };
 
@@ -19,11 +31,21 @@ const searchSlice = createSlice({
   initialState,
   reducers: {
     resetSearch(state) {
-      state.searchResult = [];
+      state.searchResult = {
+        all: null,
+        movie: null,
+        tv: null,
+        bookmarked: null,
+      };
+      state.searchQuery = '';
     },
 
-    setSearchResult(state, action: PayloadAction<IMovie[]>) {
-      state.searchResult = action.payload;
+    setSearchResult(
+      state,
+      action: PayloadAction<{ result: IMovie[]; category: string }>
+    ) {
+      const { category, result } = action.payload;
+      state.searchResult[category as keyof ISearchResult] = result;
     },
     setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;

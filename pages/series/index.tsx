@@ -1,22 +1,30 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
-import Data from '../../data.json';
-import { IMovie, ISearchData } from '../../@types/types';
-import { useState } from 'react';
+import { IMovie } from '../../@types/types';
+
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import dbConnect from '../../helpers/mongoDB';
+import Entertainment from '../../models/entertainment';
+import { useDispatch } from 'react-redux';
+import { searchActions } from '../../store';
+import { useEffect } from 'react';
 
 import MoviesGrid from '../../componets/movie_grid/MoviesGrid';
-import SearchBar from '../../componets/search_bar/SearchBar';
+import convertData from '../../helpers/convertData';
 
-const Series: NextPage<{ series: IMovie[] }> = ({ series }) => {
-  const [searchData, setSearchData] = useState<ISearchData>({
-    searchResult: null,
-    searchQuery: '',
-  });
+const Series: NextPage<{ tvSeries: IMovie[] }> = ({ tvSeries }) => {
+  const { searchQuery, searchResult } = useSelector(
+    (state: RootState) => state.search
+  );
 
-  const getSearchResult = (serchData: ISearchData) => {
-    setSearchData(serchData);
-  };
+  const dispatch = useDispatch();
+  // To clear search state for all pages during pages change
+  useEffect(() => {
+    dispatch(searchActions.resetSearch());
+  }, [dispatch]);
+
   return (
     <>
       <Head>
@@ -24,29 +32,29 @@ const Series: NextPage<{ series: IMovie[] }> = ({ series }) => {
         <meta name="description" content="Entertainment web app | TV Seriers" />
         <link rel="icon" href="/favicon-32x32.png" />
       </Head>
-      <SearchBar
-        placeholder={'Search for TV series'}
-        category="TV Series"
-        getSearchResult={getSearchResult}
-      />
-      {searchData.searchResult ? (
+
+      {searchResult.tv ? (
         <MoviesGrid
-          data={searchData.searchResult}
-          header={`Found ${searchData.searchResult.length} results for '${searchData.searchQuery}'`}
+          data={searchResult.tv}
+          header={`Found ${searchResult.tv.length} results for '${searchQuery}'`}
         />
       ) : (
-        <MoviesGrid data={series} header="TV Series" />
+        <MoviesGrid data={tvSeries} header="TV Series" />
       )}
     </>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const series = Data.filter((item) => item.category === 'TV Series');
+  await dbConnect();
+
+  const result = await Entertainment.find({ category: 'TV Series' });
+
+  const tvSeries = result.map((doc) => convertData(doc));
 
   return {
     props: {
-      series,
+      tvSeries,
     },
   };
 };

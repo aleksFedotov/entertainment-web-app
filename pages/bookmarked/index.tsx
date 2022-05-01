@@ -1,22 +1,29 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
-import Data from '../../data.json';
-import { IMovie, ISearchData } from '../../@types/types';
-import { useState } from 'react';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import dbConnect from '../../helpers/mongoDB';
+import Entertainment from '../../models/entertainment';
+import convertData from '../../helpers/convertData';
+import { useDispatch } from 'react-redux';
+import { searchActions } from '../../store';
+import { useEffect } from 'react';
+import { IMovie } from '../../@types/types';
 
 import MoviesGrid from '../../componets/movie_grid/MoviesGrid';
-import SearchBar from '../../componets/search_bar/SearchBar';
 
 const Bookmarked: NextPage<{ marked: IMovie[] }> = ({ marked }) => {
-  const [searchData, setSearchData] = useState<ISearchData>({
-    searchResult: null,
-    searchQuery: '',
-  });
+  const { searchQuery, searchResult } = useSelector(
+    (state: RootState) => state.search
+  );
 
-  const getSearchResult = (serchData: ISearchData) => {
-    setSearchData(serchData);
-  };
+  const dispatch = useDispatch();
+  // To clear search state for all pages during pages change
+  useEffect(() => {
+    dispatch(searchActions.resetSearch());
+  }, [dispatch]);
+
   const movies = marked.filter((item) => item.category === 'Movie');
   const series = marked.filter((item) => item.category === 'TV Series');
 
@@ -27,16 +34,11 @@ const Bookmarked: NextPage<{ marked: IMovie[] }> = ({ marked }) => {
         <meta name="description" content="Entertainment web app | Bookmarked" />
         <link rel="icon" href="/favicon-32x32.png" />
       </Head>
-      <SearchBar
-        placeholder={'Search for bookmarked shows'}
-        category="Bookmarked"
-        getSearchResult={getSearchResult}
-      />
 
-      {searchData.searchResult ? (
+      {searchResult.bookmarked ? (
         <MoviesGrid
-          data={searchData.searchResult}
-          header={`Found ${searchData.searchResult.length} results for '${searchData.searchQuery}'`}
+          data={searchResult.bookmarked}
+          header={`Found ${searchResult.bookmarked.length} results for '${searchQuery}'`}
         />
       ) : (
         <>
@@ -49,7 +51,11 @@ const Bookmarked: NextPage<{ marked: IMovie[] }> = ({ marked }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const marked = Data.filter((item) => item.isBookmarked);
+  await dbConnect();
+
+  const result = await Entertainment.find({ isBookmarked: true });
+
+  const marked = result.map((doc) => convertData(doc));
 
   return {
     props: {

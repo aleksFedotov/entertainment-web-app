@@ -1,27 +1,34 @@
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
-import { IMovie, ISearchData } from '../@types/types';
-
-import Data from '../data.json';
+import { IMovie } from '../@types/types';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store';
+import dbConnect from '../helpers/mongoDB';
+import Entertainment from '../models/entertainment';
+import { useDispatch } from 'react-redux';
+import { searchActions } from '../store';
+import { useEffect } from 'react';
+import { useRouter } from 'next/router';
 
 import Slider from '../componets/slider/Slider';
 import MoviesGrid from '../componets/movie_grid/MoviesGrid';
-import SearchBar from '../componets/search_bar/SearchBar';
-import { useState } from 'react';
+import convertData from '../helpers/convertData';
 
-const Home: NextPage<{ data: IMovie[] }> = ({ data }) => {
-  const [searchData, setSearchData] = useState<ISearchData>({
-    searchResult: null,
-    searchQuery: '',
-  });
+const Home: NextPage<{
+  trendingEntertaiment: IMovie[];
+  recomendedEntertaiment: IMovie[];
+}> = ({ trendingEntertaiment, recomendedEntertaiment }) => {
+  const { searchResult, searchQuery } = useSelector(
+    (state: RootState) => state.search
+  );
+  const router = useRouter();
+  const dispatch = useDispatch();
 
-  const getSearchResult = (serchData: ISearchData) => {
-    setSearchData(serchData);
-  };
-
-  const trendingMovies = data.filter((movie) => movie.isTrending);
-  const recomendedMovies = data.filter((movie) => !movie.isTrending);
+  // To clear search state for all pages during pages change
+  useEffect(() => {
+    dispatch(searchActions.resetSearch());
+  }, [dispatch]);
 
   return (
     <>
@@ -30,21 +37,19 @@ const Home: NextPage<{ data: IMovie[] }> = ({ data }) => {
         <meta name="description" content="Entertainment web app | Home" />
         <link rel="icon" href="/favicon-32x32.png" />
       </Head>
-      <SearchBar
-        placeholder={'Search for movies or TV series'}
-        category="All"
-        getSearchResult={getSearchResult}
-      />
 
-      {searchData.searchResult ? (
+      {searchResult.all ? (
         <MoviesGrid
-          data={searchData.searchResult}
-          header={`Found ${searchData.searchResult.length} results for '${searchData.searchQuery}'`}
+          data={searchResult.all}
+          header={`Found ${searchResult.all.length} results for '${searchQuery}'`}
         />
       ) : (
         <>
-          <Slider data={trendingMovies} />
-          <MoviesGrid data={recomendedMovies} header="Recommended for you" />
+          <Slider data={trendingEntertaiment} />
+          <MoviesGrid
+            data={recomendedEntertaiment}
+            header="Recommended for you"
+          />
         </>
       )}
     </>
@@ -52,11 +57,21 @@ const Home: NextPage<{ data: IMovie[] }> = ({ data }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const data = Data;
+  await dbConnect();
+
+  const resultTrending = await Entertainment.find({ isTrending: true });
+  const resultRecomended = await Entertainment.find({ isTrending: false });
+
+  const trendingEntertaiment = resultTrending.map((doc) => convertData(doc));
+
+  const recomendedEntertaiment = resultRecomended.map((doc) =>
+    convertData(doc)
+  );
 
   return {
     props: {
-      data,
+      trendingEntertaiment,
+      recomendedEntertaiment,
     },
   };
 };
