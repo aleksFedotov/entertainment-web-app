@@ -6,6 +6,12 @@ import MovieCard from '../UI/movie_card/MovieCard';
 import MovieDetails from '../UI/movie_details/MovieDetails';
 import useWindowWidth from '../../hooks/useWindowWidth';
 
+interface IRegularImage {
+  small: string;
+  medium: string;
+  large: string;
+}
+
 const MoviesGrid: React.FC<{ data: IMovie[]; header: string }> = ({
   data,
   header,
@@ -30,10 +36,10 @@ const MoviesGrid: React.FC<{ data: IMovie[]; header: string }> = ({
     <MovieGridWrapper>
       <h1>{header}</h1>
       <Grid>
-        {data.map((movie, index) => (
-          <MovieWrapper key={index}>
+        {data.map((movie) => (
+          <MovieWrapper key={movie._id} data-testid="regular-entertaiment">
             <MovieCard
-              image={movie.thumbnail.regular[imageSize]}
+              image={movie.thumbnail.regular[imageSize as keyof IRegularImage]}
               movieTitle={movie.title}
               width={width}
               isBooked={movie.isBookmarked}

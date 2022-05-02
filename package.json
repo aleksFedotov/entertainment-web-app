@@ -43,7 +43,8 @@
   "jest": {
     "testEnvironment": "jsdom",
     "moduleNameMapper": {
-      "\\.svg": "<rootDir>/__mocks__/svg.js"
+      "\\.svg": "<rootDir>/__mocks__/svg.js",
+      "swiper": "<rootDir>/__mocks__/swiper.js"
     }
   }
 }

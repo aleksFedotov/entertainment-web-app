@@ -16,11 +16,16 @@ const MovieDetails: React.FC<{ data: IMovie; type: string }> = ({
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      aria-label="movie-details"
     >
       <div>
         <p>{data.year}</p>
         <span></span>
-        {data.category === 'Movie' ? <MovieIcon /> : <TvIcon />}
+        {data.category === 'Movie' ? (
+          <MovieIcon data-testid="movie-icon" />
+        ) : (
+          <TvIcon data-testid="tv-icon" />
+        )}
         <p>{data.category}</p>
         <span></span>
         <p>{data.rating}</p>

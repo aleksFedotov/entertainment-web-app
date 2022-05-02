@@ -21,7 +21,11 @@ const Slider: React.FC<{ data: IMovie[] }> = ({ data }) => {
         modules={[FreeMode]}
       >
         {data.map((movie, index) => (
-          <SwiperSlide className="swiper_slide" key={index}>
+          <SwiperSlide
+            className="swiper_slide"
+            key={movie._id}
+            data-testid="trending-entertaiment"
+          >
             <SliderCard data={movie} />
           </SwiperSlide>
         ))}

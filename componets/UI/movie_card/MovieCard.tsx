@@ -24,18 +24,23 @@ const MovieCard: React.FC<{
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
+      aria-label="movie-card"
     >
       {children}
       <ImgageWrapper>
-        <img src={image} alt="movieTitle" />
+        <img src={image} alt={movieTitle} />
       </ImgageWrapper>
       <Ovaerlay>
-        <PlayBtn>
-          <img src="/assets/icon-play.svg" alt={movieTitle}></img>Play
+        <PlayBtn aria-label="play-button">
+          <img src="/assets/icon-play.svg" alt="play-icon"></img>Play
         </PlayBtn>
       </Ovaerlay>
       <BookedMark isBooked={isBooked}>
-        {isBooked ? <FullMarkIcon /> : <EmptydMarkIcon />}
+        {isBooked ? (
+          <FullMarkIcon data-testid="full-mark" />
+        ) : (
+          <EmptydMarkIcon data-testid="empty-mark" />
+        )}
       </BookedMark>
     </Card>
   );
