@@ -1,5 +1,11 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
 import Link from 'next/link';
+import { useForm, SubmitHandler } from 'react-hook-form';
+
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store';
+import { useDispatch } from 'react-redux';
+import { searchActions } from '../../store';
 
 import {
   AuthWrapper,
@@ -8,81 +14,36 @@ import {
   AuthInputWrapper,
   ErrorMessage,
 } from './AuthStyles';
+
 import { Button } from '../UI/button/ButtonStyles';
 import useInput from '../../hooks/useInput';
 
-const isNotEmpty = (value: string) => value.trim() !== '';
-const isValidEmail = (value: string) => {
-  var re =
-    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-  return re.test(value);
+type FormValues = {
+  email: string;
+  password: string;
+  repeatedPassword?: string;
 };
 
 const Auth: React.FC = () => {
-  const [isLogin, setIsLogin] = useState(true);
-
-  const toggleAuth = () => {
-    if (isLogin) {
-      setIsLogin(false);
-    } else {
-      setIsLogin(true);
-    }
-  };
-
   const {
-    value: emailValue,
-    isValid: emailIsValid,
-    hasError: emailHasError,
-    valueChangeHandler: emailChangeHandler,
-    inputBlurHandler: emailBlurHandler,
-    reset: resetEmail,
-  } = useInput(isValidEmail);
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm();
 
-  const {
-    value: passwordValue,
-    isValid: passwordIsValid,
-    hasError: passwordHasError,
-    valueChangeHandler: passwordChangeHandler,
-    inputBlurHandler: passwordBlurHandler,
-    reset: resetPassword,
-  } = useInput(isNotEmpty);
+  const password = useRef({});
+  password.current = watch('password', '');
 
-  const {
-    value: repeatPasswordValue,
-    isValid: repeatPasswordIsValid,
-    hasError: repeatPasswordHasError,
-    valueChangeHandler: repeatPasswordChangeHandler,
-    inputBlurHandler: repeatPasswordBlurHandler,
-    reset: resetRepeatPassword,
-  } = useInput(isNotEmpty);
+  const dispatch = useDispatch();
+  const isLogin = useSelector((state: RootState) => state.search.isLogin);
 
-  let formIsValid = false;
-
-  if (emailIsValid && passwordIsValid && repeatPasswordIsValid) {
-    formIsValid = true;
-  }
-
-  const submitHandler = (e: React.SyntheticEvent) => {
-    e.preventDefault();
-
-    if (!formIsValid) {
-      return;
-    }
-
-    const data = {
-      email: emailValue,
-      password: passwordValue,
-    };
-
-    console.log(data);
-
-    resetEmail();
-    resetPassword();
-    resetRepeatPassword();
-  };
+  const submitHandler = handleSubmit((data) => {
+    console.log({ email: data.email, password: data.password });
+  });
 
   return (
-    <AuthWrapper>
+    <AuthWrapper data-testid="auth">
       <Link href={'/'} passHref>
         {/* eslint-disable-next-line */}
         <img src={'/assets/logo.svg'} alt="logo" className="logo" />
@@ -90,41 +51,47 @@ const Auth: React.FC = () => {
       <AuthForm onSubmit={submitHandler}>
         <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
         <AuthInputWrapper>
-          <AuthInput
-            placeholder="Email address"
-            type="text"
-            value={emailValue}
-            onChange={emailChangeHandler}
-            onBlur={emailBlurHandler}
-          />
-          {emailHasError && <ErrorMessage>{'Invalid email'}</ErrorMessage>}
+          <label id="email">
+            <AuthInput
+              placeholder="Email address"
+              type="text"
+              aria-label="email"
+              {...register('email', {
+                required: true,
+                pattern:
+                  /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+              })}
+            />
+          </label>
+          {errors.email && <ErrorMessage>{'Invalid email'}</ErrorMessage>}
         </AuthInputWrapper>
         <AuthInputWrapper>
-          <AuthInput
-            placeholder="Password"
-            type="password"
-            value={passwordValue}
-            onChange={passwordChangeHandler}
-            onBlur={passwordBlurHandler}
-          />
-          {passwordHasError && <ErrorMessage>{"Can't be empty"}</ErrorMessage>}
+          <label id="password">
+            <AuthInput
+              placeholder="Password"
+              type="password"
+              {...register('password', {
+                required: true,
+              })}
+              aria-label="password"
+            />
+          </label>
+          {errors.password && <ErrorMessage>{"Can't be empty"}</ErrorMessage>}
         </AuthInputWrapper>
         {!isLogin && (
           <AuthInputWrapper>
-            <AuthInput
-              placeholder="Repeat password"
-              type="password"
-              value={repeatPasswordValue}
-              onChange={repeatPasswordChangeHandler}
-              onBlur={repeatPasswordBlurHandler}
-            />
-            {(repeatPasswordHasError ||
-              repeatPasswordValue !== passwordValue) && (
-              <ErrorMessage>
-                {repeatPasswordValue == passwordValue
-                  ? "Can't be empty"
-                  : 'Passwords does not match'}
-              </ErrorMessage>
+            <label id="repeted-password">
+              <AuthInput
+                placeholder="Repeat password"
+                type="password"
+                {...register('password_repeate', {
+                  validate: (value) => value === password.current,
+                })}
+                aria-label="password_repeate"
+              />
+            </label>
+            {errors.password_repeate && (
+              <ErrorMessage>{'The passwords do not match'}</ErrorMessage>
             )}
           </AuthInputWrapper>
         )}
@@ -133,7 +100,12 @@ const Auth: React.FC = () => {
         </Button>
         <p>
           {isLogin ? 'Don’t have an account?' : 'Already have an account?'}{' '}
-          <span onClick={toggleAuth}>{isLogin ? 'Sign Up' : 'Login'}</span>
+          <span
+            onClick={() => dispatch(searchActions.toggleLogin())}
+            aria-label="login-toggle"
+          >
+            {isLogin ? 'Sign Up' : 'Login'}
+          </span>
         </p>
       </AuthForm>
     </AuthWrapper>

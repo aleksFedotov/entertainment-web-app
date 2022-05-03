@@ -7,6 +7,7 @@ import Data from '../data.json';
 interface IInitialState {
   searchResult: ISearchResult;
   searchQuery: string;
+  isLogin: boolean;
 }
 
 interface ISearchResult {
@@ -24,9 +25,10 @@ const initialState: IInitialState = {
     bookmarked: null,
   },
   searchQuery: '',
+  isLogin: true,
 };
 
-const searchSlice = createSlice({
+export const searchSlice = createSlice({
   name: 'search',
   initialState,
   reducers: {
@@ -49,6 +51,14 @@ const searchSlice = createSlice({
     },
     setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
+    },
+
+    toggleLogin(state) {
+      state.isLogin = !state.isLogin;
+    },
+
+    setAuthMode(state, action: PayloadAction<string>) {
+      state.isLogin = action.payload === 'login' ? true : false;
     },
   },
 });

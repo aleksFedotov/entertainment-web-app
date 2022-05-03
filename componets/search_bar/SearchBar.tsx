@@ -61,17 +61,22 @@ const SearchBar: React.FC = () => {
   };
 
   return (
-    <SearchBarWrapper onSubmit={submitHandler}>
-      <SearchIcon />
-      <SearchInput
-        placeholder={placeholder}
-        name="searchQuery"
-        type="text"
-        onChange={(e: React.FormEvent<HTMLInputElement | HTMLInputElement>) => {
-          dispatch(searchActions.setSearchQuery(e.currentTarget.value));
-        }}
-        value={searchQuery}
-      />
+    <SearchBarWrapper onSubmit={submitHandler} data-testid="search-bar">
+      <SearchIcon data-testid="search-icon" />
+      <label id="search">
+        <SearchInput
+          placeholder={placeholder}
+          name="searchQuery"
+          type="text"
+          onChange={(
+            e: React.FormEvent<HTMLInputElement | HTMLInputElement>
+          ) => {
+            dispatch(searchActions.setSearchQuery(e.currentTarget.value));
+          }}
+          value={searchQuery}
+          aria-labelledby="search"
+        />
+      </label>
     </SearchBarWrapper>
   );
 };

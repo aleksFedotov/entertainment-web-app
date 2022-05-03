@@ -20,4 +20,9 @@ export const Button = styled.button`
   &:active {
     transform: scale(0.98);
   }
+
+  &:disabled {
+    background-color: grey;
+    pointer-events: none;
+  }
 `;
