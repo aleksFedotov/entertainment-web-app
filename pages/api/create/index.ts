@@ -2,24 +2,15 @@ import dbConnect from '../../../helpers/mongoDB';
 import Entertainment from '../../../models/entertainment';
 
 import Data from '../../../data.json';
-import { IMovie } from '../../../@types/types';
 import type { NextApiRequest, NextApiResponse } from 'next';
-
-const uploadData = async (item: IMovie) => {
-  const entertainment = await Entertainment.create({
-    item,
-  });
-};
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  console.log(Entertainment);
   await dbConnect();
 
   Data.forEach(async (item) => {
-    console.log(item.thumbnail.trending?.small);
     await Entertainment.create({
       title: item.title,
       thumbnail: {
@@ -41,5 +32,5 @@ export default async function handler(
     });
   });
 
-  res.status(200).json({ name: 'John Doe' });
+  res.status(200).json({ msg: 'DB created' });
 }

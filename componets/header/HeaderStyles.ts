@@ -3,10 +3,9 @@ import { media } from '../../styles/GlobalStyles';
 
 export const HeaderWrapper = styled.div`
   width: 9.6rem;
-
   height: inherit;
   max-height: 96rem;
-
+  position: relative;
   border-radius: 2rem;
   display: flex;
   flex-direction: column;

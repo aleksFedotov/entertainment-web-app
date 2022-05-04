@@ -1,8 +1,9 @@
-import React from 'react';
-
-import { HeaderWrapper, Navigation, Avatar } from './HeaderStyles';
+import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+
+import { HeaderWrapper, Navigation, Avatar } from './HeaderStyles';
+import Entry from './entry/Entry';
 
 import HomeIcon from '../../public/assets/icon-nav-home.svg';
 import MovieIcon from '../../public/assets/icon-nav-movies.svg';
@@ -10,7 +11,12 @@ import SeriesIcon from '../../public/assets/icon-nav-tv-series.svg';
 import BookMarkIcon from '../../public/assets/icon-nav-bookmark.svg';
 
 const Header: React.FC = () => {
+  const [isEntryOpened, setIsEntryOpened] = useState<boolean>(false);
   const router = useRouter();
+
+  const avatarClickHandler = () => {
+    setIsEntryOpened((prevState) => !prevState);
+  };
 
   return (
     <HeaderWrapper>
@@ -52,9 +58,10 @@ const Header: React.FC = () => {
           </a>
         </Link>
       </Navigation>
-      <Avatar>
+      <Avatar onClick={avatarClickHandler}>
         <img src="/assets/user.png" alt="avatar" />
       </Avatar>
+      {isEntryOpened && <Entry closeEntryHandler={avatarClickHandler} />}
     </HeaderWrapper>
   );
 };

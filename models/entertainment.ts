@@ -1,8 +1,11 @@
 import mongoose from 'mongoose';
 
-const EntertaimentSchema = new mongoose.Schema({
+const Schema = mongoose.Schema;
+
+const EntertaimentSchema = new Schema({
   title: {
     type: String,
+    required: true,
   },
   thumbnail: {
     trending: {
@@ -10,18 +13,13 @@ const EntertaimentSchema = new mongoose.Schema({
       small: String,
       large: String,
     },
-    regular: {
-      small: String,
-      medium: String,
-      large: String,
-    },
+    regular: { required: true, small: String, medium: String, large: String },
   },
-  year: Number,
-  category: String,
-  rating: String,
-  isBookmarked: Boolean,
-  isTrending: Boolean,
+  year: { type: Number, required: true },
+  category: { type: String, required: true },
+  rating: { type: String, required: true },
+  isBookmarked: { type: Boolean, required: true },
+  isTrending: { type: Boolean, required: true },
 });
 
-export default mongoose.models.Entertaiment ||
-  mongoose.model('Entertaiment', EntertaimentSchema);
+export default mongoose.model('Entertaiment', EntertaimentSchema);
