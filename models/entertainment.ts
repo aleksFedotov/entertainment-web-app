@@ -13,7 +13,7 @@ const EntertaimentSchema = new Schema({
       small: String,
       large: String,
     },
-    regular: { required: true, small: String, medium: String, large: String },
+    regular: { small: String, medium: String, large: String },
   },
   year: { type: Number, required: true },
   category: { type: String, required: true },
@@ -22,4 +22,5 @@ const EntertaimentSchema = new Schema({
   isTrending: { type: Boolean, required: true },
 });
 
-export default mongoose.model('Entertaiment', EntertaimentSchema);
+export default mongoose.models.Entertaiment ||
+  mongoose.model('Entertaiment', EntertaimentSchema);

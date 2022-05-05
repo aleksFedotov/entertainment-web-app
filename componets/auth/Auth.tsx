@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import Link from 'next/link';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
+import useHttp from '../../hooks/useHttp';
 
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
@@ -16,13 +17,6 @@ import {
 } from './AuthStyles';
 
 import { Button } from '../UI/button/ButtonStyles';
-import useInput from '../../hooks/useInput';
-
-type FormValues = {
-  email: string;
-  password: string;
-  repeatedPassword?: string;
-};
 
 const Auth: React.FC = () => {
   const {
@@ -32,14 +26,46 @@ const Auth: React.FC = () => {
     watch,
   } = useForm();
 
+  const { isLoading, error, sendRequest, clearError } = useHttp();
+
   const password = useRef({});
   password.current = watch('password', '');
 
   const dispatch = useDispatch();
   const isLogin = useSelector((state: RootState) => state.search.isLogin);
 
-  const submitHandler = handleSubmit((data) => {
-    console.log({ email: data.email, password: data.password });
+  const submitHandler = handleSubmit(async (data) => {
+    if (isLogin) {
+      try {
+        const response = await sendRequest({
+          url: '/api/login',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: {
+            email: data.email,
+            password: data.password,
+          },
+        });
+        console.log(response);
+      } catch (error) {}
+    } else {
+      try {
+        const response = await sendRequest({
+          url: '/api/signin',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: {
+            email: data.email,
+            password: data.password,
+          },
+        });
+        console.log(response);
+      } catch (error) {}
+    }
   });
 
   return (
@@ -48,6 +74,8 @@ const Auth: React.FC = () => {
         {/* eslint-disable-next-line */}
         <img src={'/assets/logo.svg'} alt="logo" className="logo" />
       </Link>
+      {isLoading && <p>Loading...</p>}
+      {error && <p>{error}</p>}
       <AuthForm onSubmit={submitHandler}>
         <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
         <AuthInputWrapper>

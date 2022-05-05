@@ -1,5 +1,6 @@
 import React from 'react';
 import { useRouter } from 'next/router';
+import useHttp from '../../hooks/useHttp';
 
 import { SearchBarWrapper, SearchInput } from './SearchBarStyles';
 import SearchIcon from '../../public/assets/icon-search.svg';
@@ -10,6 +11,7 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 
 const SearchBar: React.FC = () => {
+  const { isLoading, error, sendRequest, clearError } = useHttp();
   const searchQuery = useSelector(
     (state: RootState) => state.search.searchQuery
   );
@@ -35,15 +37,9 @@ const SearchBar: React.FC = () => {
     e.preventDefault();
     if (searchQuery) {
       try {
-        const res = await fetch(
-          `/api/search/${searchQuery}?category=${category}`
-        );
-
-        if (!res.ok) {
-          throw new Error('Cannot find');
-        }
-
-        const searchData = await res.json();
+        const searchData = await sendRequest({
+          url: `/api/search/${searchQuery}?category=${category}`,
+        });
 
         dispatch(
           searchActions.setSearchResult({

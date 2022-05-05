@@ -1,6 +1,8 @@
 import dbConnect from '../../../helpers/mongoDB';
 import User from '../../../models/user';
+import bcrypt from 'bcrypt';
 import { NextApiRequest, NextApiResponse } from 'next';
+import * as jsw from 'jsonwebtoken';
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,15 +12,26 @@ export default async function handler(
 
   const { method } = req;
   const { email, password } = req.body;
+
   if (method === 'POST') {
     let existingUser;
+
+    let hashedPassword;
+    try {
+      hashedPassword = await bcrypt.hash(password, 12);
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        msg: 'Could not create user, please try again',
+      });
+    }
 
     try {
       existingUser = await User.findOne({ email: email });
     } catch (error) {
       res.status(400).json({
         success: false,
-        msg: 'Signing up failed, please try again later 1',
+        msg: 'Signing up failed, please try again later',
       });
     }
 
@@ -32,37 +45,30 @@ export default async function handler(
     try {
       const user = await User.create({
         email,
-        password,
+        password: hashedPassword,
         bookmarks: [],
       });
-      res.status(201).json({ user: user.toObject({ getters: true }) });
+
+      let token;
+      try {
+        token = jsw.sign(
+          { urerId: user.id, email: user.email },
+          'supersecret_dont_share',
+          { expiresIn: '1h' }
+        );
+      } catch (error) {
+        res.status(500).json({
+          success: false,
+          msg: 'Signing up failed, please try again.',
+        });
+      }
+
+      res.status(201).json({ userId: user.id, token: token });
     } catch (error) {
-      console.log(error);
       res.status(500).json({
         success: false,
-        msg: 'Signing up failed, please try again. 2',
+        msg: 'Signing up failed, please try again.',
       });
     }
-  }
-
-  if (method === 'GET') {
-    let existingUser;
-
-    try {
-      existingUser = await User.findOne({ email: email });
-    } catch (error) {
-      res.status(500).json({
-        success: false,
-        msg: 'Logging in failed, please try again later.',
-      });
-    }
-
-    if (!existingUser || existingUser.password !== password) {
-      res.status(401).json({
-        success: false,
-        msg: 'Invalid credentials, could not log you in.',
-      });
-    }
-    res.json({ msg: 'Logged in!' });
   }
 }
