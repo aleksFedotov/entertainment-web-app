@@ -5,7 +5,7 @@ interface IReqCongig {
   url: string;
   method?: string;
   headers?: HeadersInit;
-  body?: object | null;
+  body?: BodyInit | null;
 }
 
 type TUseHttpRes = {
@@ -32,7 +32,7 @@ const useHttp = (): TUseHttpRes => {
         const res = await fetch(url, {
           method,
           headers,
-          body: body !== null ? JSON.stringify(body) : null,
+          body,
           signal: httpAbortCtrl.signal,
         });
         const resData = await res.json();
@@ -41,12 +41,13 @@ const useHttp = (): TUseHttpRes => {
           (reqCtrl) => reqCtrl !== httpAbortCtrl
         );
         if (!res.ok) {
-          throw new Error(resData.message);
+          throw new Error(resData.msg);
         }
         setIsLoading(false);
         return resData;
       } catch (error) {
         // @ts-ignore
+
         setError(error.message);
         setIsLoading(false);
         throw error;

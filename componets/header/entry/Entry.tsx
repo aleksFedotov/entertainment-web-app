@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { searchActions } from '../../../store';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../../store/store';
+import { authActions } from '../../../store/authSlice';
 import { useRouter } from 'next/router';
 
 import { EntryWrapper } from './EntryStyles';
@@ -9,20 +10,20 @@ import { Button } from '../../UI/button/ButtonStyles';
 const Entry: React.FC<{ closeEntryHandler: () => void }> = ({
   closeEntryHandler,
 }) => {
-  const [isLogedin, setIsLogedin] = useState<boolean>(false);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const dispatch = useDispatch();
   const router = useRouter();
 
   const clickHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
     const label = e.currentTarget.attributes[0].nodeValue;
     if (label === 'login') {
-      dispatch(searchActions.setAuthMode('login'));
+      dispatch(authActions.setAuthMode('login'));
       router.push('/auth');
     } else if (label === 'sign_in') {
-      dispatch(searchActions.setAuthMode('sign_in'));
+      dispatch(authActions.setAuthMode('sign_in'));
       router.push('/auth');
     } else {
-      console.log('logout');
+      dispatch(authActions.logout());
     }
 
     closeEntryHandler();
@@ -30,7 +31,7 @@ const Entry: React.FC<{ closeEntryHandler: () => void }> = ({
 
   return (
     <EntryWrapper>
-      {!isLogedin ? (
+      {!isLoggedIn ? (
         <>
           <Button onClick={clickHandler} aria-label="login">
             Login

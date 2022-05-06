@@ -19,14 +19,14 @@ export default async function handler(
     try {
       existingUser = await User.findOne({ email: email });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         msg: 'Logging in failed, please try again later.',
       });
     }
 
     if (!existingUser) {
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
         msg: 'Invalid credentials, could not log you in.',
       });
@@ -36,28 +36,33 @@ export default async function handler(
     try {
       isValidPassword = await bcrypt.compare(password, existingUser.password);
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         msg: 'Could not log you in,please check your credentials and try again',
       });
     }
 
     if (!isValidPassword) {
-      res.status(401).json({
+      return res.status(401).json({
         success: false,
         msg: 'Invalid credentials, could not log you in.',
       });
     }
 
     let token;
+
     try {
+      let secret = process.env.SECRET;
+      if (!secret) {
+        throw new Error();
+      }
       token = jsw.sign(
         { urerId: existingUser.id, email: existingUser.email },
-        'supersecret_dont_share',
+        secret,
         { expiresIn: '1h' }
       );
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         msg: 'Logging in failed, please try again.',
       });

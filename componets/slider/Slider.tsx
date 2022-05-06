@@ -14,6 +14,7 @@ const Slider: React.FC<{ data: IMovie[] }> = ({ data }) => {
   return (
     <SliderWrapper>
       <h2>Trending</h2>
+
       <Swiper
         slidesPerView={windowWidth! > 650 ? 2.5 : 1.5}
         spaceBetween={windowWidth! > 650 ? 40 : 16}

@@ -2,11 +2,12 @@ import React, { useRef } from 'react';
 import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import useHttp from '../../hooks/useHttp';
+import { useRouter } from 'next/router';
 
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../../store/store';
 import { useDispatch } from 'react-redux';
-import { searchActions } from '../../store';
+import { authActions } from '../../store/authSlice';
 
 import {
   AuthWrapper,
@@ -14,9 +15,11 @@ import {
   AuthInput,
   AuthInputWrapper,
   ErrorMessage,
+  AuthError,
 } from './AuthStyles';
 
 import { Button } from '../UI/button/ButtonStyles';
+import LoadingSpinner from '../UI/loading-spinner/LoadingSpinner';
 
 const Auth: React.FC = () => {
   const {
@@ -27,15 +30,18 @@ const Auth: React.FC = () => {
   } = useForm();
 
   const { isLoading, error, sendRequest, clearError } = useHttp();
+  const router = useRouter();
 
   const password = useRef({});
   password.current = watch('password', '');
 
   const dispatch = useDispatch();
-  const isLogin = useSelector((state: RootState) => state.search.isLogin);
+  const isLoggingMode = useSelector(
+    (state: RootState) => state.auth.isLoggingMode
+  );
 
   const submitHandler = handleSubmit(async (data) => {
-    if (isLogin) {
+    if (isLoggingMode) {
       try {
         const response = await sendRequest({
           url: '/api/login',
@@ -43,13 +49,14 @@ const Auth: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: {
+          body: JSON.stringify({
             email: data.email,
             password: data.password,
-          },
+          }),
         });
-        console.log(response);
-      } catch (error) {}
+        dispatch(authActions.login());
+        router.push('/');
+      } catch (err) {}
     } else {
       try {
         const response = await sendRequest({
@@ -58,13 +65,14 @@ const Auth: React.FC = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: {
+          body: JSON.stringify({
             email: data.email,
             password: data.password,
-          },
+          }),
         });
-        console.log(response);
-      } catch (error) {}
+        dispatch(authActions.login());
+        router.push('/');
+      } catch (err) {}
     }
   });
 
@@ -74,10 +82,10 @@ const Auth: React.FC = () => {
         {/* eslint-disable-next-line */}
         <img src={'/assets/logo.svg'} alt="logo" className="logo" />
       </Link>
-      {isLoading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      <AuthError error={error}>{error}</AuthError>
       <AuthForm onSubmit={submitHandler}>
-        <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
+        {isLoading && <LoadingSpinner asOverlay text="Wait for it..." />}
+        <h1>{isLoggingMode ? 'Login' : 'Sign Up'}</h1>
         <AuthInputWrapper>
           <label id="email">
             <AuthInput
@@ -106,7 +114,7 @@ const Auth: React.FC = () => {
           </label>
           {errors.password && <ErrorMessage>{"Can't be empty"}</ErrorMessage>}
         </AuthInputWrapper>
-        {!isLogin && (
+        {!isLoggingMode && (
           <AuthInputWrapper>
             <label id="repeted-password">
               <AuthInput
@@ -124,15 +132,17 @@ const Auth: React.FC = () => {
           </AuthInputWrapper>
         )}
         <Button>
-          {isLogin ? 'Login to your account' : 'Create an account'}
+          {isLoggingMode ? 'Login to your account' : 'Create an account'}
         </Button>
         <p>
-          {isLogin ? 'Don’t have an account?' : 'Already have an account?'}{' '}
+          {isLoggingMode
+            ? 'Don’t have an account?'
+            : 'Already have an account?'}{' '}
           <span
-            onClick={() => dispatch(searchActions.toggleLogin())}
+            onClick={() => dispatch(authActions.toggleLogin())}
             aria-label="login-toggle"
           >
-            {isLogin ? 'Sign Up' : 'Login'}
+            {isLoggingMode ? 'Sign Up' : 'Login'}
           </span>
         </p>
       </AuthForm>

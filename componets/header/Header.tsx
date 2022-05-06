@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
 
 import { HeaderWrapper, Navigation, Avatar } from './HeaderStyles';
 import Entry from './entry/Entry';
@@ -12,6 +14,7 @@ import BookMarkIcon from '../../public/assets/icon-nav-bookmark.svg';
 
 const Header: React.FC = () => {
   const [isEntryOpened, setIsEntryOpened] = useState<boolean>(false);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
   const router = useRouter();
 
   const avatarClickHandler = () => {
@@ -49,14 +52,17 @@ const Header: React.FC = () => {
             />
           </a>
         </Link>
-        <Link href={'/bookmarked'} passHref>
-          <a>
-            <BookMarkIcon
-              className={router.pathname === '/bookmarked' ? 'active' : ''}
-              aria-label="bookmared_icon"
-            />
-          </a>
-        </Link>
+
+        {isLoggedIn && (
+          <Link href={'/bookmarked'} passHref>
+            <a>
+              <BookMarkIcon
+                className={router.pathname === '/bookmarked' ? 'active' : ''}
+                aria-label="bookmared_icon"
+              />
+            </a>
+          </Link>
+        )}
       </Navigation>
       <Avatar onClick={avatarClickHandler}>
         <img src="/assets/user.png" alt="avatar" />

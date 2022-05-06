@@ -5,7 +5,7 @@ import { media } from '../../styles/GlobalStyles';
 export const SearchBarWrapper = styled.form`
   margin-top: 3.2rem;
   width: 100%;
-  display: flex;
+  display: inline-flex;
   gap: 2.2rem;
   margin-bottom: 3.2rem;
 
@@ -25,10 +25,16 @@ export const SearchBarWrapper = styled.form`
       height: 2.4rem;
     }
   }
+  label {
+    width: 100%;
+  }
 `;
 
 export const SearchInput = styled.input`
+  min-width: 0;
   width: 100%;
+  flex: 1;
+
   background-color: transparent;
   border: none;
   font-family: 'Outfit-Light';
@@ -46,6 +52,7 @@ export const SearchInput = styled.input`
     border: none;
     -webkit-text-fill-color: var(--color-white);
     -webkit-box-shadow: 0 0 0px 1000px #10141e inset;
+    box-shadow: 0 0 0px 1000px #10141e inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 

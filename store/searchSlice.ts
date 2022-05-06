@@ -1,13 +1,10 @@
-import { createSlice, configureStore, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 import { IMovie } from '../@types/types';
-
-import Data from '../data.json';
 
 interface IInitialState {
   searchResult: ISearchResult;
   searchQuery: string;
-  isLogin: boolean;
 }
 
 interface ISearchResult {
@@ -25,7 +22,6 @@ const initialState: IInitialState = {
     bookmarked: null,
   },
   searchQuery: '',
-  isLogin: true,
 };
 
 export const searchSlice = createSlice({
@@ -52,21 +48,9 @@ export const searchSlice = createSlice({
     setSearchQuery(state, action: PayloadAction<string>) {
       state.searchQuery = action.payload;
     },
-
-    toggleLogin(state) {
-      state.isLogin = !state.isLogin;
-    },
-
-    setAuthMode(state, action: PayloadAction<string>) {
-      state.isLogin = action.payload === 'login' ? true : false;
-    },
   },
 });
 
 export const searchActions = searchSlice.actions;
 
-export type RootState = ReturnType<typeof store.getState>;
-
-const store = configureStore({ reducer: { search: searchSlice.reducer } });
-
-export default store;
+export default searchSlice;

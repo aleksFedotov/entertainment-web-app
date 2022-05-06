@@ -20,7 +20,7 @@ export default async function handler(
     try {
       hashedPassword = await bcrypt.hash(password, 12);
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         msg: 'Could not create user, please try again',
       });
@@ -29,14 +29,14 @@ export default async function handler(
     try {
       existingUser = await User.findOne({ email: email });
     } catch (error) {
-      res.status(400).json({
+      return res.status(400).json({
         success: false,
         msg: 'Signing up failed, please try again later',
       });
     }
 
     if (existingUser) {
-      res.status(422).json({
+      return res.status(422).json({
         success: false,
         msg: 'User exists already, please login instead.',
       });
@@ -51,21 +51,23 @@ export default async function handler(
 
       let token;
       try {
-        token = jsw.sign(
-          { urerId: user.id, email: user.email },
-          'supersecret_dont_share',
-          { expiresIn: '1h' }
-        );
+        let secret = process.env.SECRET;
+        if (!secret) {
+          throw new Error();
+        }
+        token = jsw.sign({ urerId: user.id, email: user.email }, secret, {
+          expiresIn: '1h',
+        });
       } catch (error) {
-        res.status(500).json({
+        return res.status(500).json({
           success: false,
           msg: 'Signing up failed, please try again.',
         });
       }
 
-      res.status(201).json({ userId: user.id, token: token });
+      return res.status(201).json({ userId: user.id, token: token });
     } catch (error) {
-      res.status(500).json({
+      return res.status(500).json({
         success: false,
         msg: 'Signing up failed, please try again.',
       });

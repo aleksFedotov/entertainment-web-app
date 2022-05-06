@@ -1,5 +1,9 @@
 import styled from 'styled-components';
 
+type TErorr = {
+  error: boolean;
+};
+
 export const AuthWrapper = styled.div`
   max-width: 40rem;
   width: 100%;
@@ -7,7 +11,7 @@ export const AuthWrapper = styled.div`
   margin-top: 7.8rem;
   display: flex;
   flex-direction: column;
-  gap: 8.3rem;
+  gap: 3rem;
   align-items: center;
 
   img {
@@ -16,6 +20,7 @@ export const AuthWrapper = styled.div`
 `;
 
 export const AuthForm = styled.form`
+  position: relative;
   width: 100%;
   background-color: var(--color-semi-dark-blue);
   padding: 4.2rem 3.2rem 3.5rem;
@@ -72,6 +77,7 @@ export const AuthInput = styled.input`
     border: none;
     -webkit-text-fill-color: var(--color-white);
     -webkit-box-shadow: 0 0 0px 1000px #10141e inset;
+    box-shadow: 0 0 0px 1000px #10141e inset;
     transition: background-color 5000s ease-in-out 0s;
   }
 `;
@@ -87,4 +93,9 @@ export const ErrorMessage = styled.p`
   color: var(--color-red) !important;
   font-size: var(--font-size-body-s);
   font-family: 'Outfit-Light';
+`;
+
+export const AuthError = styled.p<TErorr>`
+  color: var(--color-red);
+  visibility: ${(props) => (props.error ? 'visible' : 'hiden')};
 `;

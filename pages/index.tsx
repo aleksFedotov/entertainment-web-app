@@ -3,11 +3,11 @@ import Head from 'next/head';
 import { GetServerSideProps } from 'next';
 import { IMovie } from '../@types/types';
 import { useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { RootState } from '../store/store';
 import dbConnect from '../helpers/mongoDB';
 import Entertainment from '../models/entertainment';
 import { useDispatch } from 'react-redux';
-import { searchActions } from '../store';
+import { searchActions } from '../store/searchSlice';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 

@@ -6,12 +6,12 @@ import { SearchBarWrapper, SearchInput } from './SearchBarStyles';
 import SearchIcon from '../../public/assets/icon-search.svg';
 
 import { useDispatch } from 'react-redux';
-import { searchActions } from '../../store';
+import { searchActions } from '../../store/searchSlice';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../../store/store';
 
 const SearchBar: React.FC = () => {
-  const { isLoading, error, sendRequest, clearError } = useHttp();
+  const { sendRequest } = useHttp();
   const searchQuery = useSelector(
     (state: RootState) => state.search.searchQuery
   );
@@ -47,9 +47,7 @@ const SearchBar: React.FC = () => {
             category: category,
           })
         );
-      } catch (error) {
-        console.log(error);
-      }
+      } catch (err) {}
       return;
     }
 

@@ -70,7 +70,19 @@ body {
     padding: 0 1.6rem;
   }
 
+  &::-webkit-scrollbar-track {
+  background: var(-color-semi-dark-blue);       
+}
 
+&::-webkit-scrollbar-thumb {
+  background-color: var(--color-red);   
+  border-radius: 20px;      
+   
+}
+
+&::-webkit-scrollbar {
+  width: 12px;             
+}
 }
 
 a {

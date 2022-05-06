@@ -2,12 +2,12 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { GetServerSideProps } from 'next';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../../store/store';
 import dbConnect from '../../helpers/mongoDB';
 import Entertainment from '../../models/entertainment';
 import convertData from '../../helpers/convertData';
 import { useDispatch } from 'react-redux';
-import { searchActions } from '../../store';
+import { searchActions } from '../../store/searchSlice';
 import { useEffect } from 'react';
 import { IMovie } from '../../@types/types';
 

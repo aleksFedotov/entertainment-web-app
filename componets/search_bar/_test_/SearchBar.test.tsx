@@ -3,7 +3,7 @@ import '@testing-library/jest-dom/extend-expect';
 import { RouterContext } from 'next/dist/shared/lib/router-context';
 import { createMockRouter } from '../../../test-utils/createMockRouter';
 import { Provider } from 'react-redux';
-import store from '../../../store';
+import store from '../../../store/store';
 
 import SearchBar from '../SearchBar';
 
