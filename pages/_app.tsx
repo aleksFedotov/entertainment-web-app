@@ -3,8 +3,6 @@ import { GlobalStyles, PageWrapper, MainWrapper } from '../styles/GlobalStyles';
 import { useRouter } from 'next/router';
 import { Provider } from 'react-redux';
 import store from '../store/store';
-import { useEffect } from 'react';
-import { useDispatch } from 'react-redux';
 
 import Header from '../componets/header/Header';
 import SearchBar from '../componets/search_bar/SearchBar';

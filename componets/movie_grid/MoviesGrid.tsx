@@ -39,6 +39,7 @@ const MoviesGrid: React.FC<{ data: IMovie[]; header: string }> = ({
         {data.map((movie) => (
           <MovieWrapper key={movie._id} data-testid="regular-entertaiment">
             <MovieCard
+              entertaimentId={movie._id}
               image={movie.thumbnail.regular[imageSize as keyof IRegularImage]}
               movieTitle={movie.title}
               width={width}

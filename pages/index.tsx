@@ -8,12 +8,19 @@ import dbConnect from '../helpers/mongoDB';
 import Entertainment from '../models/entertainment';
 import { useDispatch } from 'react-redux';
 import { searchActions } from '../store/searchSlice';
+import { authActions } from '../store/authSlice';
 import { useEffect } from 'react';
 import { useRouter } from 'next/router';
 
 import Slider from '../componets/slider/Slider';
 import MoviesGrid from '../componets/movie_grid/MoviesGrid';
 import convertData from '../helpers/convertData';
+
+interface IStoredData {
+  userId: string;
+  token: string;
+  expiration: string;
+}
 
 const Home: NextPage<{
   trendingEntertaiment: IMovie[];
@@ -22,13 +29,49 @@ const Home: NextPage<{
   const { searchResult, searchQuery } = useSelector(
     (state: RootState) => state.search
   );
-  const router = useRouter();
+  const { token, tokenExpirationDate } = useSelector(
+    (state: RootState) => state.auth
+  );
   const dispatch = useDispatch();
 
   // To clear search state for all pages during pages change
   useEffect(() => {
     dispatch(searchActions.resetSearch());
   }, [dispatch]);
+
+  useEffect(() => {
+    const storedData: IStoredData | null = JSON.parse(
+      // @ts-ignore
+      localStorage.getItem('userData')
+    );
+    if (
+      storedData &&
+      storedData.token &&
+      new Date(storedData.expiration) > new Date()
+    ) {
+      dispatch(
+        authActions.login({
+          userId: storedData.userId,
+          token: storedData.token,
+          tokenExpirationDate: new Date(storedData.expiration),
+        })
+      );
+    }
+  }, [dispatch]);
+
+  useEffect(() => {
+    let logoutTimer;
+    if (token && tokenExpirationDate) {
+      const remainingTime =
+        tokenExpirationDate.getTime() - new Date().getTime();
+      logoutTimer = setTimeout(
+        () => dispatch(authActions.logout()),
+        remainingTime
+      );
+    } else {
+      clearTimeout(logoutTimer);
+    }
+  }, [token, dispatch, tokenExpirationDate]);
 
   return (
     <>

@@ -10,7 +10,7 @@ import { Button } from '../../UI/button/ButtonStyles';
 const Entry: React.FC<{ closeEntryHandler: () => void }> = ({
   closeEntryHandler,
 }) => {
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const token = useSelector((state: RootState) => state.auth.token);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -31,7 +31,7 @@ const Entry: React.FC<{ closeEntryHandler: () => void }> = ({
 
   return (
     <EntryWrapper>
-      {!isLoggedIn ? (
+      {!token ? (
         <>
           <Button onClick={clickHandler} aria-label="login">
             Login

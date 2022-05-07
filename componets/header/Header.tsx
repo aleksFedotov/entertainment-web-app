@@ -14,7 +14,7 @@ import BookMarkIcon from '../../public/assets/icon-nav-bookmark.svg';
 
 const Header: React.FC = () => {
   const [isEntryOpened, setIsEntryOpened] = useState<boolean>(false);
-  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const token = useSelector((state: RootState) => state.auth.token);
   const router = useRouter();
 
   const avatarClickHandler = () => {
@@ -53,7 +53,7 @@ const Header: React.FC = () => {
           </a>
         </Link>
 
-        {isLoggedIn && (
+        {token && (
           <Link href={'/bookmarked'} passHref>
             <a>
               <BookMarkIcon

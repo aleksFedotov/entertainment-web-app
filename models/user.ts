@@ -6,7 +6,7 @@ const userSchema = new Schema({
   email: { type: String, required: true },
   password: { type: String, required: true },
   bookmarks: [
-    { type: mongoose.Types.ObjectId, required: true, ref: 'Entertaiment' },
+    { type: Schema.Types.ObjectId, required: false, ref: 'Entertaiment' },
   ],
 });
 
