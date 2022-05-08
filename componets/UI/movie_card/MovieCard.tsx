@@ -1,9 +1,11 @@
-import React, { useCallback } from 'react';
+import React from 'react';
 import { useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import EmptydMarkIcon from '../../../public/assets/icon-bookmark-empty.svg';
 import FullMarkIcon from '../../../public/assets/icon-bookmark-full.svg';
 import useHttp from '../../../hooks/useHttp';
 import { RootState } from '../../../store/store';
+import { authActions } from '../../../store/authSlice';
 
 import {
   Card,
@@ -19,24 +21,32 @@ const MovieCard: React.FC<{
   width: string;
   movieTitle: string;
   children?: React.ReactNode;
-  isBooked: boolean;
-}> = ({ image, width, movieTitle, children, isBooked, entertaimentId }) => {
+}> = ({ image, width, movieTitle, children, entertaimentId }) => {
   const { sendRequest, error, isLoading } = useHttp();
-  const userId = useSelector((state: RootState) => state.auth.userId);
+  const { userId, bookmarks } = useSelector((state: RootState) => state.auth);
+  const dispatch = useDispatch();
+
+  const isBooked = bookmarks.includes(entertaimentId);
+
   const bookMarkHandler = () => {
-    // try {
-    //   const response = sendRequest({
-    //     url: 'api/bookmark',
-    //     method: 'PUT',
-    //     headers: {
-    //       'Content-Type': 'application/json',
-    //     },
-    //     body: JSON.stringify({
-    //       userId,
-    //       entertaimentId,
-    //     }),
-    //   });
-    // } catch (error) {}
+    if (!userId) return;
+
+    try {
+      sendRequest({
+        url: 'api/bookmark',
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId,
+          entertaimentId,
+          operation: isBooked ? 'pull' : 'push',
+        }),
+      });
+
+      dispatch(authActions.updateBookmarks(entertaimentId));
+    } catch (error) {}
   };
 
   return (

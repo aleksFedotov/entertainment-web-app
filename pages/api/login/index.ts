@@ -70,8 +70,8 @@ export default async function handler(
 
     res.status(201).json({
       userId: existingUser.id,
-
       token: token,
+      bookmarks: existingUser.bookmarks,
     });
   }
 }

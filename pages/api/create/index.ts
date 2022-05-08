@@ -27,10 +27,11 @@ import Entertainment from '../../../models/entertainment';
 //       year: item.year,
 //       category: item.category,
 //       rating: item.rating,
-//       isBookmarked: item.isBookmarked,
 //       isTrending: item.isTrending,
 //     });
 //   });
 
-//   res.status(200).json({ msg: 'DB created' });
+//   const data = await Entertainment.find();
+
+//   res.status(200).json({ data: data });
 // }

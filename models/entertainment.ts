@@ -18,7 +18,6 @@ const EntertaimentSchema = new Schema({
   year: { type: Number, required: true },
   category: { type: String, required: true },
   rating: { type: String, required: true },
-  isBookmarked: { type: Boolean, required: true },
   isTrending: { type: Boolean, required: true },
 });
 

@@ -1,4 +1,5 @@
-import { Action, configureStore } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
+
 import { Middleware } from 'redux';
 import authSlice from './authSlice';
 import searchSlice from './searchSlice';
@@ -10,13 +11,13 @@ export type RootState = ReturnType<typeof store.getState>;
 const authMiddleware = (): Middleware => {
   return (store) => (next) => (action) => {
     if (action.type === 'auth/login') {
-      console.log(action);
       localStorage.setItem(
         'userData',
         JSON.stringify({
           userId: action.payload.userId,
           token: action.payload.token,
           expiration: action.payload.tokenExpirationDate,
+          bookmarks: action.payload.bookmarks,
         })
       );
     } else if (action.type === 'auth/logout') {
@@ -28,7 +29,6 @@ const authMiddleware = (): Middleware => {
 
 const store = configureStore({
   reducer: { search: searchSlice.reducer, auth: authSlice.reducer },
-
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
       serializableCheck: false,

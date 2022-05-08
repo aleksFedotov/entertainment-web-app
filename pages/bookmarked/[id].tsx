@@ -4,28 +4,22 @@ import { GetServerSideProps } from 'next';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import dbConnect from '../../helpers/mongoDB';
-import Entertainment from '../../models/entertainment';
+import User from '../../models/user';
 import convertData from '../../helpers/convertData';
-import { useDispatch } from 'react-redux';
-import { searchActions } from '../../store/searchSlice';
-import { useEffect } from 'react';
+
 import { IMovie } from '../../@types/types';
 
 import MoviesGrid from '../../componets/movie_grid/MoviesGrid';
 
-const Bookmarked: NextPage<{ marked: IMovie[] }> = ({ marked }) => {
+const Bookmarked: NextPage<{ bookmarks: IMovie[] }> = ({ bookmarks }) => {
   const { searchQuery, searchResult } = useSelector(
     (state: RootState) => state.search
   );
 
-  const dispatch = useDispatch();
-  // To clear search state for all pages during pages change
-  useEffect(() => {
-    dispatch(searchActions.resetSearch());
-  }, [dispatch]);
+  console.log(bookmarks[0]);
 
-  const movies = marked.filter((item) => item.category === 'Movie');
-  const series = marked.filter((item) => item.category === 'TV Series');
+  const movies = bookmarks.filter((item) => item.category === 'Movie');
+  const series = bookmarks.filter((item) => item.category === 'TV Series');
 
   return (
     <>
@@ -50,16 +44,20 @@ const Bookmarked: NextPage<{ marked: IMovie[] }> = ({ marked }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const id = query.id;
+
   await dbConnect();
 
-  const result = await Entertainment.find({ isBookmarked: true });
+  const result = await User.findOne({ _id: id }).populate('bookmarks');
 
-  const marked = result.map((doc) => convertData(doc));
+  console.log(result.bookmarks);
+
+  const bookmarks = result.bookmarks.map((doc) => convertData(doc));
 
   return {
     props: {
-      marked,
+      bookmarks: [],
     },
   };
 };

@@ -17,7 +17,7 @@ const SliderCard: React.FC<{ data: IMovie }> = ({ data }) => {
       image={imageSrc}
       movieTitle={data.title}
       width={windowWidth! > 650 ? '470' : '240'}
-      isBooked={data.isBookmarked}
+      entertaimentId={data._id}
     >
       <MovieDetails data={data} type="trending" />
     </MovieCard>

@@ -1,4 +1,3 @@
-import { abort } from 'process';
 import { useState, useCallback, useRef, useEffect } from 'react';
 
 interface IReqCongig {
@@ -41,6 +40,7 @@ const useHttp = (): TUseHttpRes => {
           (reqCtrl) => reqCtrl !== httpAbortCtrl
         );
         if (!res.ok) {
+          console.log(res);
           throw new Error(resData.msg);
         }
         setIsLoading(false);

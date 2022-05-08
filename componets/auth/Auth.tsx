@@ -57,10 +57,12 @@ const Auth: React.FC = () => {
         const tokenExpirationDate = new Date(
           new Date().getTime() + 1000 * 60 * 60
         );
+
         dispatch(
           authActions.login({
             userId: response.userId,
             token: response.token,
+            bookmarks: response.bookmarks,
             tokenExpirationDate,
           })
         );
@@ -79,7 +81,18 @@ const Auth: React.FC = () => {
             password: data.password,
           }),
         });
-        dispatch(authActions.login(response));
+        const tokenExpirationDate = new Date(
+          new Date().getTime() + 1000 * 60 * 60
+        );
+
+        dispatch(
+          authActions.login({
+            userId: response.userId,
+            token: response.token,
+            bookmarks: response.bookmarks,
+            tokenExpirationDate,
+          })
+        );
         router.push('/');
       } catch (err) {}
     }

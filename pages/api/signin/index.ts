@@ -65,7 +65,11 @@ export default async function handler(
         });
       }
 
-      return res.status(201).json({ userId: user.id, token: token });
+      return res.status(201).json({
+        userId: user.id,
+        token: token,
+        bookmarks: user.bookmarks,
+      });
     } catch (error) {
       return res.status(500).json({
         success: false,

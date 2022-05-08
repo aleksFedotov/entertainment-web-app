@@ -43,7 +43,6 @@ const MoviesGrid: React.FC<{ data: IMovie[]; header: string }> = ({
               image={movie.thumbnail.regular[imageSize as keyof IRegularImage]}
               movieTitle={movie.title}
               width={width}
-              isBooked={movie.isBookmarked}
             />
             <MovieDetails data={movie} type="regular" />
           </MovieWrapper>
