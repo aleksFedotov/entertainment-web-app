@@ -16,10 +16,42 @@ const Bookmarked: NextPage<{ bookmarks: IMovie[] }> = ({ bookmarks }) => {
     (state: RootState) => state.search
   );
 
-  console.log(bookmarks[0]);
-
   const movies = bookmarks.filter((item) => item.category === 'Movie');
   const series = bookmarks.filter((item) => item.category === 'TV Series');
+
+  let content;
+
+  if (!searchResult.bookmarked && movies.length === 0 && series.length === 0) {
+    content = (
+      <p
+        style={{
+          color: 'var(--color-white)',
+          fontSize: '2.4rem',
+          textAlign: 'center',
+        }}
+      >
+        You have no bookmark, nothing to show
+      </p>
+    );
+  } else if (searchResult.bookmarked) {
+    content = (
+      <MoviesGrid
+        data={searchResult.bookmarked}
+        header={`Found ${searchResult.bookmarked.length} results for '${searchQuery}'`}
+      />
+    );
+  } else {
+    content = (
+      <>
+        {movies.length > 0 && (
+          <MoviesGrid header="Bookmarked Movies" data={movies} />
+        )}
+        {series.length > 0 && (
+          <MoviesGrid header="Bookmarked TV Series" data={series} />
+        )}
+      </>
+    );
+  }
 
   return (
     <>
@@ -29,17 +61,7 @@ const Bookmarked: NextPage<{ bookmarks: IMovie[] }> = ({ bookmarks }) => {
         <link rel="icon" href="/favicon-32x32.png" />
       </Head>
 
-      {searchResult.bookmarked ? (
-        <MoviesGrid
-          data={searchResult.bookmarked}
-          header={`Found ${searchResult.bookmarked.length} results for '${searchQuery}'`}
-        />
-      ) : (
-        <>
-          {movies && <MoviesGrid header="Bookmarked Movies" data={movies} />}
-          {series && <MoviesGrid header="Bookmarked TV Series" data={series} />}
-        </>
-      )}
+      {content}
     </>
   );
 };
@@ -50,14 +72,13 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   await dbConnect();
 
   const result = await User.findOne({ _id: id }).populate('bookmarks');
+  const resBookmarks: any[] = result.bookmarks;
 
-  console.log(result.bookmarks);
-
-  const bookmarks = result.bookmarks.map((doc) => convertData(doc));
+  const bookmarks = resBookmarks.map((doc) => convertData(doc));
 
   return {
     props: {
-      bookmarks: [],
+      bookmarks,
     },
   };
 };

@@ -23,6 +23,7 @@ const authMiddleware = (): Middleware => {
     } else if (action.type === 'auth/logout') {
       localStorage.removeItem('userData');
     }
+
     return next(action);
   };
 };

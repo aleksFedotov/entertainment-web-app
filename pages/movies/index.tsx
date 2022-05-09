@@ -41,8 +41,6 @@ export const getServerSideProps: GetServerSideProps = async () => {
 
   const result = await Entertainment.find({ category: 'Movie' });
 
-  console.log(result);
-
   const movies = result.map((doc) => convertData(doc));
 
   return {

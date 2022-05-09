@@ -33,7 +33,7 @@ const MovieCard: React.FC<{
 
     try {
       sendRequest({
-        url: 'api/bookmark',
+        url: '/api/bookmark',
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -45,7 +45,12 @@ const MovieCard: React.FC<{
         }),
       });
 
-      dispatch(authActions.updateBookmarks(entertaimentId));
+      dispatch(
+        authActions.updateBookmarks({
+          eId: entertaimentId,
+          operation: isBooked ? 'remove' : 'add',
+        })
+      );
     } catch (error) {}
   };
 
@@ -63,9 +68,6 @@ const MovieCard: React.FC<{
         <img src={image} alt={movieTitle} />
       </ImgageWrapper>
       <Ovaerlay>
-        <p>{error}</p>
-        <p>{isLoading}</p>
-
         <PlayBtn aria-label="play-button">
           <img src="/assets/icon-play.svg" alt="play-icon"></img>Play
         </PlayBtn>

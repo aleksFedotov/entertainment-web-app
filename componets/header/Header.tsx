@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import store, { RootState } from '../../store/store';
 import { useDispatch } from 'react-redux';
 import { authActions } from '../../store/authSlice';
 import { searchActions } from '../../store/searchSlice';
@@ -24,7 +24,9 @@ interface IStoredData {
 
 const Header: React.FC = () => {
   const [isEntryOpened, setIsEntryOpened] = useState<boolean>(false);
-  const { token, userId } = useSelector((state: RootState) => state.auth);
+  const { token, userId, bookmarks } = useSelector(
+    (state: RootState) => state.auth
+  );
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -33,6 +35,7 @@ const Header: React.FC = () => {
     const resetSearch = () => {
       dispatch(searchActions.resetSearch());
     };
+
     router.events.on('routeChangeStart', resetSearch);
   }, [dispatch, router.events]);
 

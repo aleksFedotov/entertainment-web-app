@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }: AppProps) {
           <Header />
           <MainWrapper>
             <SearchBar />
-            <Component {...pageProps} />;
+            <Component {...pageProps} />
           </MainWrapper>
         </PageWrapper>
       )}

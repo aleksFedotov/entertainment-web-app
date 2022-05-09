@@ -2,7 +2,6 @@ import dbConnect from '../../../helpers/mongoDB';
 import User from '../../../models/user';
 import { NextApiRequest, NextApiResponse } from 'next';
 import * as jsw from 'jsonwebtoken';
-import Entertainment from '../../../models/entertainment';
 
 export default async function handler(
   req: NextApiRequest,
@@ -12,7 +11,7 @@ export default async function handler(
 
   const { method } = req;
   const { userId, entertaimentId, operation } = req.body;
-  console.log(userId, entertaimentId, operation);
+
   if (method === 'PUT') {
     try {
       let user;

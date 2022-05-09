@@ -48,14 +48,17 @@ const authSlice = createSlice({
     setAuthMode(state, action: PayloadAction<string>) {
       state.isLoggingMode = action.payload === 'login' ? true : false;
     },
-    updateBookmarks(state, action: PayloadAction<string>) {
-      const isExistedBookmark = state.bookmarks.includes(action.payload);
-      if (isExistedBookmark) {
+    updateBookmarks(
+      state,
+      action: PayloadAction<{ eId: string; operation: string }>
+    ) {
+      const { eId, operation } = action.payload;
+      if (operation === 'remove') {
         state.bookmarks = state.bookmarks.filter(
-          (entertainmentId) => entertainmentId !== action.payload
+          (entertainmentId) => entertainmentId !== eId
         );
       } else {
-        state.bookmarks.push(action.payload);
+        state.bookmarks.push(eId);
       }
     },
   },

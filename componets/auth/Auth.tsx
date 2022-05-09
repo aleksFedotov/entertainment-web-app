@@ -57,6 +57,7 @@ const Auth: React.FC = () => {
         const tokenExpirationDate = new Date(
           new Date().getTime() + 1000 * 60 * 60
         );
+        console.log(response);
 
         dispatch(
           authActions.login({

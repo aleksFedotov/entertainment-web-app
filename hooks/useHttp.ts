@@ -34,20 +34,20 @@ const useHttp = (): TUseHttpRes => {
           body,
           signal: httpAbortCtrl.signal,
         });
+
         const resData = await res.json();
 
         activeHttpRequests.current = activeHttpRequests.current.filter(
           (reqCtrl) => reqCtrl !== httpAbortCtrl
         );
+
         if (!res.ok) {
-          console.log(res);
           throw new Error(resData.msg);
         }
         setIsLoading(false);
         return resData;
       } catch (error) {
         // @ts-ignore
-
         setError(error.message);
         setIsLoading(false);
         throw error;
