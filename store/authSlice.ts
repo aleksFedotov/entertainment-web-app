@@ -5,7 +5,7 @@ interface IInitialState {
   isLoggingMode: boolean;
   userId: string | null;
   token: string | null;
-  tokenExpirationDate: Date | null;
+  tokenExpirationDate: Date | null | string;
   bookmarks: string[];
 }
 
@@ -27,7 +27,7 @@ const authSlice = createSlice({
         token: string;
         userId: string;
         bookmarks: string[];
-        tokenExpirationDate: Date;
+        tokenExpirationDate: string;
       }>
     ) {
       state.userId = action.payload.userId;

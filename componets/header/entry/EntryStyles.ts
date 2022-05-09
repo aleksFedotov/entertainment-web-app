@@ -19,6 +19,7 @@ export const EntryWrapper = styled.div`
 
   ${media.tablet} {
     right: 2rem;
-    bottom: -17rem;
+    bottom: initial;
+    top: 7rem;
   }
 `;

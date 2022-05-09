@@ -33,15 +33,15 @@ const Entry: React.FC<{ closeEntryHandler: () => void }> = ({
     <EntryWrapper>
       {!token ? (
         <>
-          <Button onClick={clickHandler} aria-label="login">
+          <Button entry onClick={clickHandler} aria-label="login">
             Login
           </Button>
-          <Button aria-label="sign_in" onClick={clickHandler}>
+          <Button entry aria-label="sign_in" onClick={clickHandler}>
             Sign Up
           </Button>
         </>
       ) : (
-        <Button aria-label="logout" onClick={clickHandler}>
+        <Button entry aria-label="logout" onClick={clickHandler}>
           Logout
         </Button>
       )}

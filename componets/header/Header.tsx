@@ -39,28 +39,6 @@ const Header: React.FC = () => {
     router.events.on('routeChangeStart', resetSearch);
   }, [dispatch, router.events]);
 
-  // To hydrate states after reload
-  useEffect(() => {
-    const storedData: IStoredData | null = JSON.parse(
-      // @ts-ignore
-      localStorage.getItem('userData')
-    );
-    if (
-      storedData &&
-      storedData.token &&
-      new Date(storedData.expiration) > new Date()
-    ) {
-      dispatch(
-        authActions.login({
-          userId: storedData.userId,
-          token: storedData.token,
-          tokenExpirationDate: new Date(storedData.expiration),
-          bookmarks: storedData.bookmarks,
-        })
-      );
-    }
-  }, [dispatch]);
-
   const avatarClickHandler = () => {
     setIsEntryOpened((prevState) => !prevState);
   };

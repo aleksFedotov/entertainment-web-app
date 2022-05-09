@@ -22,6 +22,7 @@
     "react-dom": "18.0.0",
     "react-hook-form": "^7.30.0",
     "react-redux": "^8.0.1",
+    "redux-persist": "^6.0.0",
     "styled-components": "^5.3.5",
     "swiper": "^8.1.4"
   },

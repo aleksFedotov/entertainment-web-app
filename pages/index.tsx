@@ -31,7 +31,7 @@ const Home: NextPage<{
     let logoutTimer;
     if (token && tokenExpirationDate) {
       const remainingTime =
-        tokenExpirationDate.getTime() - new Date().getTime();
+        new Date(tokenExpirationDate).getTime() - new Date().getTime();
       logoutTimer = setTimeout(
         () => dispatch(authActions.logout()),
         remainingTime
