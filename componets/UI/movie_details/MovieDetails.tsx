@@ -12,6 +12,7 @@ const MovieDetails: React.FC<{ data: IMovie; type: string }> = ({
 }) => {
   return (
     <Details
+      layout
       type={type}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}

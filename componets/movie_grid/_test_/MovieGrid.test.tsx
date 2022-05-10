@@ -1,5 +1,8 @@
 import { render, screen } from '@testing-library/react';
 import '@testing-library/jest-dom/extend-expect';
+import { Provider } from 'react-redux';
+import store from '../../../store/store';
+import { IMovie } from '../../../@types/types';
 
 const Data = [
   {
@@ -86,9 +89,29 @@ const Data = [
 
 import MoviesGrid from '../MoviesGrid';
 
+const MockHeaderComponent: React.FC<{ data: IMovie[]; header: string }> = ({
+  data,
+  header,
+}) => {
+  return (
+    <Provider store={store}>
+      <MoviesGrid data={data} header={header} />
+    </Provider>
+  );
+};
+
+jest.mock('next/image', () => ({
+  // eslint-disable-next-line
+  __esModule: true,
+  default: (props: any) => {
+    // eslint-disable-next-line jsx-a11y/alt-text
+    return <img {...props} />;
+  },
+}));
+
 describe('MovieGrid component testing', () => {
   test('rendering right amount of cards', async () => {
-    render(<MoviesGrid data={Data} header={'Test'} />);
+    render(<MockHeaderComponent data={Data} header={'Test'} />);
 
     const entertaiments = await screen.findAllByTestId('regular-entertaiment');
 
@@ -96,7 +119,7 @@ describe('MovieGrid component testing', () => {
   });
 
   test('rendering heading', async () => {
-    render(<MoviesGrid data={Data} header={'Test'} />);
+    render(<MockHeaderComponent data={Data} header={'Test'} />);
     const heading = await screen.findByRole('heading', { level: 1 });
     expect(heading).toHaveTextContent(/test/i);
   });

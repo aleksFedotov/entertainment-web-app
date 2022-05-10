@@ -8,7 +8,6 @@ import { persistStore } from 'redux-persist';
 
 import Header from '../componets/header/Header';
 import SearchBar from '../componets/search_bar/SearchBar';
-
 let persistor = persistStore(store);
 
 function MyApp({ Component, pageProps }: AppProps) {

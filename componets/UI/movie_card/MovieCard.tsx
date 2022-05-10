@@ -6,6 +6,8 @@ import FullMarkIcon from '../../../public/assets/icon-bookmark-full.svg';
 import useHttp from '../../../hooks/useHttp';
 import { RootState } from '../../../store/store';
 import { authActions } from '../../../store/authSlice';
+import { messageActions } from '../../../store/messageSlice';
+import Image from 'next/image';
 
 import {
   Card,
@@ -19,17 +21,24 @@ const MovieCard: React.FC<{
   entertaimentId: string;
   image: string;
   width: string;
+
   movieTitle: string;
   children?: React.ReactNode;
-}> = ({ image, width, movieTitle, children, entertaimentId }) => {
-  const { sendRequest, error, isLoading } = useHttp();
-  const { userId, bookmarks } = useSelector((state: RootState) => state.auth);
+  isTrending?: boolean;
+}> = ({ image, width, movieTitle, children, entertaimentId, isTrending }) => {
+  const { sendRequest } = useHttp();
+  const { userId, bookmarks, token } = useSelector(
+    (state: RootState) => state.auth
+  );
   const dispatch = useDispatch();
 
   const isBooked = bookmarks.includes(entertaimentId);
 
   const bookMarkHandler = () => {
-    if (!userId) return;
+    if (!userId) {
+      dispatch(messageActions.showLoginMessage());
+      return;
+    }
 
     try {
       sendRequest({
@@ -37,6 +46,7 @@ const MovieCard: React.FC<{
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           userId,
@@ -56,8 +66,8 @@ const MovieCard: React.FC<{
 
   return (
     <Card
-      image={image}
       width={width}
+      layout
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -65,7 +75,13 @@ const MovieCard: React.FC<{
     >
       {children}
       <ImgageWrapper>
-        <img src={image} alt={movieTitle} />
+        <Image
+          src={image}
+          alt={movieTitle}
+          width={isTrending ? 470 : 280}
+          height={isTrending ? 270 : 174}
+          priority={true}
+        />
       </ImgageWrapper>
       <Ovaerlay>
         <PlayBtn aria-label="play-button">

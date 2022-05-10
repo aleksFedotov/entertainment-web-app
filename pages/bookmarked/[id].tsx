@@ -6,6 +6,7 @@ import { RootState } from '../../store/store';
 import dbConnect from '../../helpers/mongoDB';
 import User from '../../models/user';
 import convertData from '../../helpers/convertData';
+import { AnimatePresence } from 'framer-motion';
 
 import { IMovie } from '../../@types/types';
 
@@ -16,8 +17,16 @@ const Bookmarked: NextPage<{ bookmarks: IMovie[] }> = ({ bookmarks }) => {
     (state: RootState) => state.search
   );
 
-  const movies = bookmarks.filter((item) => item.category === 'Movie');
-  const series = bookmarks.filter((item) => item.category === 'TV Series');
+  const bookmarksArray = useSelector(
+    (state: RootState) => state.auth.bookmarks
+  );
+
+  const movies = bookmarks.filter(
+    (item) => item.category === 'Movie' && bookmarksArray.includes(item._id)
+  );
+  const series = bookmarks.filter(
+    (item) => item.category === 'TV Series' && bookmarksArray.includes(item._id)
+  );
 
   let content;
 
@@ -44,7 +53,9 @@ const Bookmarked: NextPage<{ bookmarks: IMovie[] }> = ({ bookmarks }) => {
     content = (
       <>
         {movies.length > 0 && (
-          <MoviesGrid header="Bookmarked Movies" data={movies} />
+          <AnimatePresence>
+            <MoviesGrid header="Bookmarked Movies" data={movies} />
+          </AnimatePresence>
         )}
         {series.length > 0 && (
           <MoviesGrid header="Bookmarked TV Series" data={series} />

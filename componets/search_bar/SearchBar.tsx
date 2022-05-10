@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
 import useHttp from '../../hooks/useHttp';
+import { AnimatePresence } from 'framer-motion';
 
 import { SearchBarWrapper, SearchInput } from './SearchBarStyles';
 import SearchIcon from '../../public/assets/icon-search.svg';
+import GlobalMessage from '../UI/global-message/GlobalMessage';
 
 import { useDispatch } from 'react-redux';
 import { searchActions } from '../../store/searchSlice';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import { messageActions } from '../../store/messageSlice';
 
 const SearchBar: React.FC = () => {
   const { sendRequest } = useHttp();
@@ -16,6 +19,9 @@ const SearchBar: React.FC = () => {
     (state: RootState) => state.search.searchQuery
   );
   const uid = useSelector((state: RootState) => state.auth.userId);
+  const isLoginMessage = useSelector(
+    (state: RootState) => state.message.isLoginMessage
+  );
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -55,8 +61,26 @@ const SearchBar: React.FC = () => {
     dispatch(searchActions.resetSearch());
   };
 
+  useEffect(() => {
+    let timer = setTimeout(
+      () => dispatch(messageActions.hideLoginMessage()),
+      3000
+    );
+
+    return () => {
+      clearTimeout(timer);
+    };
+  }, [dispatch, isLoginMessage]);
+
   return (
     <SearchBarWrapper onSubmit={submitHandler} data-testid="search-bar">
+      <AnimatePresence>
+        {isLoginMessage && (
+          <GlobalMessage>
+            <p>Please login to bookmark</p>
+          </GlobalMessage>
+        )}
+      </AnimatePresence>
       <SearchIcon data-testid="search-icon" />
       <label id="search">
         <SearchInput

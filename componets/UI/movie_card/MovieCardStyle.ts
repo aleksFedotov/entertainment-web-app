@@ -4,8 +4,8 @@ import { motion } from 'framer-motion';
 import { media } from '../../../styles/GlobalStyles';
 
 interface ICardProps {
-  image: string;
   width: string;
+  height?: string;
 }
 
 type BookMarkProps = {
@@ -53,28 +53,28 @@ export const PlayBtn = styled.button`
 `;
 
 export const ImgageWrapper = styled.div`
-  transition: transform 0.3s ease;
+  overflow: hidden;
+  border-radius: 0.8rem;
 
   img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    border-radius: 0.8rem;
+    transition: transform 0.3s ease;
   }
 `;
 
 export const Card = styled(motion.div)<ICardProps>`
   position: relative;
   max-width: ${(props) => props.width}px;
-  width: 100%;
-  height: fit-content;
-  border-radius: 0.8rem;
+
   cursor: pointer;
   color: var(--color-white);
   overflow: hidden;
 
   &:hover {
     ${ImgageWrapper} {
-      transform: scale(1.05);
+      img {
+        transform: scale(1.05);
+      }
     }
     ${Ovaerlay} {
       display: flex;
