@@ -2,9 +2,8 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import store, { RootState } from '../../store/store';
+import { RootState } from '../../store/store';
 import { useDispatch } from 'react-redux';
-import { authActions } from '../../store/authSlice';
 import { searchActions } from '../../store/searchSlice';
 
 import { HeaderWrapper, Navigation, Avatar } from './HeaderStyles';
