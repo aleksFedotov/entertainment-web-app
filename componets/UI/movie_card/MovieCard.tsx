@@ -79,7 +79,7 @@ const MovieCard: React.FC<{
           src={image}
           alt={movieTitle}
           width={isTrending ? 470 : 280}
-          height={isTrending ? 270 : 174}
+          height={isTrending ? 230 : 174}
           priority={true}
         />
       </ImgageWrapper>
